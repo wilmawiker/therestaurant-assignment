@@ -30,3 +30,25 @@ exports.getAllBookings = async (req, res) => {
     });
   }
 };
+
+exports.createNewBooking = async (req, res) => {
+  try {
+    const title = req.body.title || "";
+
+    if (!title) {
+      return res.status(400).json({
+        message: "You must provide a title.",
+      });
+    }
+
+    const newBooking = await Booking.create({
+      title: title,
+    });
+
+    return res.status(201).json(req.body);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
