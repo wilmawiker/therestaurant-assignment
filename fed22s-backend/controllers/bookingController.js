@@ -4,7 +4,7 @@ exports.getBookingById = async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
     const booking = await Booking.findById(bookingId);
-    if (!booking) throw new Error("This product does not exist");
+    if (!booking) throw new Error("This booking does not exist");
     return res.json({
       data: booking,
     });
