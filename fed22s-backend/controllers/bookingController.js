@@ -33,19 +33,35 @@ exports.getAllBookings = async (req, res) => {
 
 exports.createNewBooking = async (req, res) => {
   try {
-    const title = req.body.title || "";
+    const { numberOfPeople, sitting, email, date } = req.body;
 
-    if (!title) {
+    if (!numberOfPeople || !sitting || !email || !date) {
       return res.status(400).json({
-        message: "You must provide a title.",
+        message: "All fields are required.",
+      });
+    }
+
+    const tableSize = 6;
+    const tablesPerSitting = 15;
+
+    const tablesNeeded = Math.ceil(numberOfPeople / tableSize);
+    const occupiedTables = await Booking.countDocuments({ sitting, date });
+
+    if (occupiedTables + tablesNeeded > tablesPerSitting) {
+      return res.status(400).json({
+        message: "No available tables for the selected sitting and date.",
       });
     }
 
     const newBooking = await Booking.create({
-      title: title,
+      table: 0,
+      numberOfPeople,
+      sitting,
+      email,
+      date,
     });
 
-    return res.status(201).json(req.body);
+    return res.status(201).json(newBooking);
   } catch (error) {
     return res.status(500).json({
       message: error.message,

@@ -1,46 +1,44 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Booking = require("./models/Booking");
 require('dotenv').config();
-
-const Table = require('./models/Table');
-const Timeslot = require('./models/Timeslot');
 
 mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-async function seedDB() {
-  try {
-    await Table.deleteMany({});
-    await Timeslot.deleteMany({});
+const tablesPerSitting = 15;
+const defaultTableSize = 0;
 
-    const tables = [];
-    for (let i = 1; i <= 15; i++) {
-      tables.push({
-        tableNumber: i,
-        timeslots: [
-          {
-            timeslot: 18,
-            isOccupiedBy: null,
-            amountOfGuests: 0,
-          },
-          {
-            timeslot: 21,
-            isOccupiedBy: null,
-            amountOfGuests: 0,
-          },
-        ],
+async function seedDb() {
+  try {
+    await Booking.deleteMany({});
+
+    const totalTables = tablesPerSitting * 2;
+
+    for (let i = 0; i < totalTables; i++) {
+      const tableNumber = i + 1;
+      const sitting = i < tablesPerSitting ? 1 : 2;
+
+      const newBooking = new Booking({
+        table: tableNumber,
+        numberOfPeople: defaultTableSize,
+        sitting,
+        email: "",
+        date: new Date(),
       });
+
+      await newBooking.save();
     }
 
-    const savedTables = await Table.insertMany(tables);
-
-    console.log('Seed data created successfully.');
+    console.log("--------------------------------");
+    console.log("Database seeded successfully! 🌱");
+    console.log("--------------------------------");
+    process.exit(0);
   } catch (error) {
-    console.error('Error seeding the database:', error);
-  } finally {
-    mongoose.connection.close();
+    console.error(error);
+    process.exit(1);
   }
 }
 
-seedDB();
+seedDb();
