@@ -45,16 +45,36 @@ exports.createNewBooking = async (req, res) => {
     const tablesPerSitting = 15;
 
     const tablesNeeded = Math.ceil(numberOfPeople / tableSize);
-    const occupiedTables = await Booking.countDocuments({ sitting, date });
+    const occupiedTables = await Booking.find({ sitting, date });
 
-    if (occupiedTables + tablesNeeded > tablesPerSitting) {
+    // Check if there are enough available tables
+    if (occupiedTables.length + tablesNeeded > tablesPerSitting) {
       return res.status(400).json({
         message: "No available tables for the selected sitting and date.",
       });
     }
 
+    // Collect all table numbers from occupied tables
+    const occupiedTableNumbers = occupiedTables.reduce(
+      (numbers, table) => numbers.concat(table.table),
+      []
+    );
+
+    // Find available tables from the pool of tables
+    const availableTables = [];
+    let remainingTablesNeeded = tablesNeeded;
+    let currentTableNumber = 1;
+
+    while (remainingTablesNeeded > 0 && currentTableNumber <= tablesPerSitting) {
+      if (!occupiedTableNumbers.includes(currentTableNumber)) {
+        availableTables.push(currentTableNumber);
+        remainingTablesNeeded--;
+      }
+      currentTableNumber++;
+    }
+
     const newBooking = await Booking.create({
-      table: 0,
+      table: availableTables,
       numberOfPeople,
       sitting,
       email,
