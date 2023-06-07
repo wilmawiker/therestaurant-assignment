@@ -10,8 +10,6 @@ const LandingPage = () => {
     getAllBookings();
   }, []);
 
-  return <h1>Startsida</h1>;
-};
     return (
         <>
         <Header></Header>
