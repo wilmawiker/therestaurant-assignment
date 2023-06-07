@@ -1,0 +1,13 @@
+export interface IBooking {
+    numberOfPeople: number;
+    sitting: number;
+    email: string;
+    date: Date;
+}
+
+export const defaultBooking: IBooking = {
+    numberOfPeople: 0,
+    sitting: 1,
+    email: "",
+    date: new Date()
+}
