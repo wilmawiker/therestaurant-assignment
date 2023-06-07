@@ -1,9 +1,19 @@
 import { useEffect } from "react";
-import { getAllBookings } from "../services/getBookings";
+import {
+  createNewBooking,
+  deleteBookingById,
+  getAllBookings,
+  getBookingById,
+  updateBookingById,
+} from "../services/bookingServices";
 
 const LandingPage = () => {
   useEffect(() => {
     getAllBookings();
+    //getBookingById();
+    //createNewBooking();
+    //deleteBookingById();
+    //updateBookingById();
   }, []);
 
   return <h1>Startsida</h1>;
