@@ -1,5 +1,12 @@
+import { useEffect } from "react";
+import { getAllBookings } from "../services/getBookings";
+
 const LandingPage = () => {
-    return <h1>Startsida</h1>
-}
+  useEffect(() => {
+    getAllBookings();
+  }, []);
+
+  return <h1>Startsida</h1>;
+};
 
 export default LandingPage;

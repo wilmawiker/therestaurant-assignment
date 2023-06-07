@@ -2,10 +2,18 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bookingRoutes = require("./routes/bookingRoutes");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: ["http://127.0.0.1:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use((req, res, next) => {
   console.log(`Processing ${req.method} request to ${req.path}`);
