@@ -1,11 +1,16 @@
+import { useState } from "react";
+import CustomerForm from "../components/CustomerForm";
 import DateForm from "../components/DateForm";
-import SittingForm from "../components/sittingForm";
+import { IBooking, defaultBooking } from "../models/IBooking";
+
 
 const BookingPage = () => {
+    const [booking, setBooking] = useState<IBooking>(defaultBooking);
     
     return <><h3>Bokningssida</h3>
-    <DateForm></DateForm>
-    <SittingForm></SittingForm>
+    <DateForm booking={booking} add={setBooking}></DateForm>
+    <CustomerForm booking={booking}></CustomerForm>
+    
     </>
 
 }
