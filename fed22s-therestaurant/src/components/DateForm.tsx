@@ -1,37 +1,40 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
-import { useForm } from "react-hook-form";
 import { IBooking, defaultBooking } from "../models/IBooking";
-import bookingFromLS from "../utils/getLS";
 import setBookingLs from "../utils/setLS";
+import SittingForm from "./SittingForm";
+import { ValuePiece } from "../utils/valuePiece";
 
+interface IDateFormProps {
+    booking: IBooking;
+    add: (booking: IBooking) => void;
+}
 
-const DateForm = () => {
-    const [booking, setBooking] = useState<IBooking>(defaultBooking);
-    const [date, setDate] = useState(new Date());
+const DateForm = ({booking, add}: IDateFormProps) => {
+    const [date, setDate] = useState<ValuePiece | [ValuePiece,ValuePiece]>(new Date());
+    const [showTime, setShowTime] = useState(false);
 
-    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handlePeopleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const name = e.target.name;
-        setBooking({...booking, [name]: e.target.value});
+        add({...booking, [name]: e.target.value});
         console.log(booking);  
     }
 
-    const handleDateChange = (e: ChangeEvent<Calendar>) => {
-
-        setBooking({...booking, date: date})
+    const handleDateChange = (date: ValuePiece | [ValuePiece, ValuePiece]) => {
+        const chosenDate = date?.toString() as string;
+        add({...booking, date: new Date(chosenDate)})
+        setShowTime(true)
     }
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        console.log(booking);
-        
         setBookingLs(booking)
     }
     return <>
     <form onSubmit={handleSubmit}>
     <label htmlFor="guests">Antal gäster:</label>
-    <select name="numberOfPeople" id="guests" onChange={handleChange}>
+    <select name="numberOfPeople" id="guests" onChange={handlePeopleChange}>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -39,11 +42,10 @@ const DateForm = () => {
         <option value="5">5</option>
         <option value="6">6</option>
     </select>
-    <Calendar onChange={setDate} value={date}/>
-    <button>Kolla tillgänglighet
-    </button>
+    <Calendar onChange={setDate} value={date} defaultActiveStartDate={new Date()} onClickDay={() => handleDateChange(date)}/>
 </form>
-<p>{date.toDateString()}</p>
+<SittingForm booking={booking} add={add} showTime={showTime} />
+
 </>
 }
 
