@@ -15,14 +15,11 @@ interface ICustormerFormProps {
 const CustomerForm = ({booking}: ICustormerFormProps) => {
     const { handleSubmit, register, formState: { errors } } = useForm<ICustomerFormInput>();
     const onSubmit: SubmitHandler<ICustomerFormInput> = values => console.log(values);
-    let time = "";
     return <>
     <div>
         <p><b>Datum:</b> {booking.date.toDateString()}</p>
-        <p><b>Gäster:</b> {booking.numberOfPeople}</p>
-        <p><b>Tid:</b> {
-            booking.sitting
-        }</p>
+        <p><b>Gäster:</b> {booking.numberOfPeople.toString()}</p>
+        <p><b>Tid:</b> {booking.sitting === 1 ? "18-21" : "21-23"}</p>
     </div>
     <form onSubmit={handleSubmit(onSubmit)}>
         <input type="text" placeholder="First name" {...register("firstName", {required: true, maxLength: 80})} />
