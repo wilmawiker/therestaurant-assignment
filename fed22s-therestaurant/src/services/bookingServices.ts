@@ -17,16 +17,22 @@ export async function getBookingById() {
   return response.data;
 }
 
-export async function createNewBooking() {
+export async function createNewBooking({
+  numberOfPeople,
+  sitting,
+  email,
+  phoneNumber,
+  date,
+}: IBooking) {
   let response = await axios.post<IBooking>(
     "http://localhost:4000/api/v1/bookings",
     {
       table: [1],
-      numberOfPeople: 2,
-      sitting: 18,
-      email: "email@mail.com",
-      phoneNumber: "0701234568",
-      date: Date.now(),
+      numberOfPeople: numberOfPeople,
+      sitting: sitting,
+      email: email,
+      phoneNumber: phoneNumber,
+      date: date,
     }
   );
   console.log(response.data);
