@@ -12,3 +12,17 @@ export const Wrapper = styled.div`
   border-radius: 15px;
   padding: 10px;
 `;
+
+export const ContactWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+`;
