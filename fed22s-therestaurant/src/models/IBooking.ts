@@ -3,17 +3,21 @@ export interface IBooking {
   table?: Number;
   numberOfPeople: Number;
   sitting: Number;
+  date: Date;
+  firstName: String;
+  lastName: String;
   email: String;
   phoneNumber: String;
-  date: Date;
 }
 
 export const defaultBooking: IBooking = {
-    numberOfPeople: 0,
+    numberOfPeople: 1,
     sitting: 1,
+    date: new Date(),
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
-    date: new Date()
 }
 
  
