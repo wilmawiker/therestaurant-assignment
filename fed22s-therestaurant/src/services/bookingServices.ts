@@ -1,12 +1,13 @@
 import axios from "axios";
 import { IBooking } from "../models/IBooking";
+import IBookingResponse from "../utils/IBookingResponse";
 
-export async function getAllBookings() {
-  let response = await axios.get<IBooking[]>(
+export async function getAllBookings(): Promise<IBooking[]> {
+  let response = await axios.get<IBookingResponse>(
     "http://localhost:4000/api/v1/bookings"
   );
-  console.log(response.data);
-  return response.data;
+  console.log(response.data.data);
+  return response.data.data;
 }
 
 export async function getBookingById() {
