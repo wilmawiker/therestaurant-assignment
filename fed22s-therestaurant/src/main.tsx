@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./scss/main.scss";
 import LandingPage from "./views/LandingPage";
 import BookingPage from "./views/BookingPage";
 import ContactPage from "./views/ContactPage";
