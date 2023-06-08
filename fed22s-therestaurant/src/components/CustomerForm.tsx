@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IBooking } from "../models/IBooking";
-import { createNewBooking } from "../services/bookingServices";
+import { createNewBooking, getAllBookings } from "../services/bookingServices";
 
 interface ICustomerFormInput {
   firstName: string;
@@ -29,6 +29,7 @@ const CustomerForm = ({ booking, add }: ICustormerFormProps) => {
       email: values.email,
       phoneNumber: values.phoneNumber.toString(),
     });
+    getAllBookings();
     createNewBooking(booking);
   };
   return (

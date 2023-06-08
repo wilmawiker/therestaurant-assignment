@@ -27,7 +27,7 @@ export async function createNewBooking({
   let response = await axios.post<IBooking>(
     "http://localhost:4000/api/v1/bookings",
     {
-      table: [1],
+      table: [],
       numberOfPeople: numberOfPeople,
       sitting: sitting,
       email: email,

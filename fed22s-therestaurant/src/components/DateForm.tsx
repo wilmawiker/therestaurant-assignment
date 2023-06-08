@@ -5,6 +5,7 @@ import { IBooking, defaultBooking } from "../models/IBooking";
 import setBookingLs from "../utils/setLS";
 import SittingForm from "./SittingForm";
 import { ValuePiece } from "../utils/valuePiece";
+import { getAllBookings } from "../services/bookingServices";
 
 interface IDateFormProps {
   booking: IBooking;
