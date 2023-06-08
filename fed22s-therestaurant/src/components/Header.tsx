@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom"
 import { LandingPageButton } from "./styled/Buttons"
 import { StyledHeader } from "./styled/Header"
@@ -19,9 +20,12 @@ export const Header = () => {
                     <LandingPageButton>Boka Bord</LandingPageButton>
                 </Link>
             </li>
-            
+            <li>
+          <Link to="/contact">Kontakt</Link>
+        </li>
         </ul>
     </nav>
     </StyledHeader>
     )
 }
+

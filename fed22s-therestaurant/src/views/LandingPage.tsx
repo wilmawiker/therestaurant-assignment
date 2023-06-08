@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { getAllBookings } from "../services/getBookings";
+import {
+  createNewBooking,
+  deleteBookingById,
+  getAllBookings,
+  getBookingById,
+  updateBookingById,
+} from "../services/bookingServices";
 
 import { Link } from "react-router-dom";
 import { LandingPageButton } from "../components/styled/Buttons";
@@ -7,6 +13,10 @@ import { LandingPageButton } from "../components/styled/Buttons";
 const LandingPage = () => {
   useEffect(() => {
     getAllBookings();
+    //getBookingById();
+    //createNewBooking();
+    //deleteBookingById();
+    //updateBookingById();
   }, []);
 
   return (

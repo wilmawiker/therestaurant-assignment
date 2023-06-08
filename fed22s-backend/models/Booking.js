@@ -1,14 +1,22 @@
 const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema({
-  table: [{
-    type: Number,
-  }],
+  table: [
+    {
+      type: Number,
+    },
+  ],
   numberOfPeople: {
     type: Number,
   },
   sitting: {
     type: Number,
+  },
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
   },
   email: {
     type: String,
