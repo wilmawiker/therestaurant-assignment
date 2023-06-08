@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./scss/main.scss";
 import LandingPage from "./views/LandingPage";
 import BookingPage from "./views/BookingPage";
+import ContactPage from "./views/ContactPage";
 import Layout from "./components/Layout";
 
 const root = ReactDOM.createRoot(
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/book",
         element: <BookingPage></BookingPage>,
+      },
+      {
+        path: "/contact",
+        element: <ContactPage></ContactPage>,
       },
     ],
   },
