@@ -6,9 +6,9 @@ import { IBooking, defaultBooking } from "../models/IBooking";
 
 const BookingPage = () => {
     const [booking, setBooking] = useState<IBooking>(defaultBooking);
-    
+    const [showForm, setShowForm] = useState(false);
     return <><h3>Bokningssida</h3>
-    <DateForm booking={booking} add={setBooking}></DateForm>
+    <DateForm booking={booking} add={setBooking} show={setShowForm}></DateForm>
     <CustomerForm booking={booking}></CustomerForm>
     
     </>
