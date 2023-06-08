@@ -6,6 +6,7 @@ import LandingPage from "./views/LandingPage";
 import BookingPage from "./views/BookingPage";
 import ContactPage from "./views/ContactPage";
 import Layout from "./components/Layout";
+import AdminPage from "./views/AdminPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage></LandingPage>,
+      },
+      {
+        path: "/admin",
+        element: <AdminPage></AdminPage>,
       },
       {
         path: "/book",

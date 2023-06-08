@@ -8,8 +8,7 @@ import {
 } from "../services/bookingServices";
 
 import { Link } from "react-router-dom";
-import { Header } from "../components/Header"
-import { Footer } from "../components/Footer"
+import { LandingPageButton } from "../components/styled/Buttons";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -20,17 +19,15 @@ const LandingPage = () => {
     //updateBookingById();
   }, []);
 
-    return (
-        <>
-        <Header></Header>
-        <div>
+  return (
+    <>
+      <div>
         <Link to="/book">
-        <button>Boka Bord</button>
+          <LandingPageButton>Boka Bord</LandingPageButton>
         </Link>
-       </div>
-       <Footer></Footer>  
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 
 export default LandingPage;
