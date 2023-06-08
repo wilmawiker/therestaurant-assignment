@@ -20,6 +20,8 @@ export async function getBookingById() {
 export async function createNewBooking({
   numberOfPeople,
   sitting,
+  firstName,
+  lastName,
   email,
   phoneNumber,
   date,
@@ -30,6 +32,8 @@ export async function createNewBooking({
       table: [],
       numberOfPeople: numberOfPeople,
       sitting: sitting,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       phoneNumber: phoneNumber,
       date: date,
