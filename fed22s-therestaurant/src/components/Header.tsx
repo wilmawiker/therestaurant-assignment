@@ -1,19 +1,23 @@
 import { Link } from "react-router-dom";
+import { Nav } from "./styled/Nav";
+import { Ul } from "./styled/Ul";
+import { Li } from "./styled/Li";
 
 export const Header = () => {
   return (
-    <nav id="nav">
-      <ul>
-        <li>
+    <Nav>
+      <h1>AWO</h1>
+      <Ul>
+        <Li>
           <Link to="/">Hem</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/book">Boka Bord</Link>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <Link to="/contact">Kontakt</Link>
-        </li>
-      </ul>
-    </nav>
+        </Li>
+      </Ul>
+    </Nav>
   );
 };
