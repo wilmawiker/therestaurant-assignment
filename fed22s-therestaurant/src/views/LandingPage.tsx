@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { getAllBookings } from "../services/getBookings";
 
 import { Link } from "react-router-dom";
-import { Header } from "../components/Header"
-import { Footer } from "../components/Footer"
 import { LandingPageButton } from "../components/styled/Buttons";
 
 const LandingPage = () => {
@@ -11,17 +9,15 @@ const LandingPage = () => {
     getAllBookings();
   }, []);
 
-    return (
-        <>
-        <Header></Header>
-        <div>
+  return (
+    <>
+      <div>
         <Link to="/book">
-        <LandingPageButton>Boka Bord</LandingPageButton>
+          <LandingPageButton>Boka Bord</LandingPageButton>
         </Link>
-       </div>
-       <Footer></Footer>  
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 
 export default LandingPage;
