@@ -33,9 +33,25 @@ exports.getAllBookings = async (req, res) => {
 
 exports.createNewBooking = async (req, res) => {
   try {
-    const { numberOfPeople, sitting, email, phoneNumber, date } = req.body;
+    const {
+      numberOfPeople,
+      sitting,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      date,
+    } = req.body;
 
-    if (!numberOfPeople || !sitting || !email || !phoneNumber || !date) {
+    if (
+      !numberOfPeople ||
+      !sitting ||
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phoneNumber ||
+      !date
+    ) {
       return res.status(400).json({
         message: "All fields are required.",
       });
@@ -62,7 +78,10 @@ exports.createNewBooking = async (req, res) => {
     let remainingTablesNeeded = tablesNeeded;
     let currentTableNumber = 1;
 
-    while (remainingTablesNeeded > 0 && currentTableNumber <= tablesPerSitting) {
+    while (
+      remainingTablesNeeded > 0 &&
+      currentTableNumber <= tablesPerSitting
+    ) {
       if (!occupiedTableNumbers.includes(currentTableNumber)) {
         availableTables.push(currentTableNumber);
         remainingTablesNeeded--;
@@ -80,6 +99,8 @@ exports.createNewBooking = async (req, res) => {
       table: availableTables,
       numberOfPeople,
       sitting,
+      firstName,
+      lastName,
       email,
       phoneNumber,
       date,
@@ -93,18 +114,17 @@ exports.createNewBooking = async (req, res) => {
   }
 };
 
-
 exports.deleteBookingById = async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
     const booking = await Booking.findByIdAndDelete(bookingId);
-    
+
     if (!booking) {
       return res.status(404).json({
         message: "Booking not found.",
       });
     }
-    
+
     return res.status(200).json({
       message: "Booking deleted successfully.",
     });
@@ -119,7 +139,8 @@ exports.deleteBookingById = async (req, res) => {
 exports.updateBookingById = async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
-    const { numberOfPeople, sitting, email, phoneNumber, date, table } = req.body;
+    const { numberOfPeople, sitting, email, phoneNumber, date, table } =
+      req.body;
 
     const booking = await Booking.findById(bookingId);
 
@@ -136,10 +157,17 @@ exports.updateBookingById = async (req, res) => {
 
     // Check if the updated booking is possible
     if (sitting || date || table || numberOfPeople) {
-      const { sitting: currentSitting, date: currentDate, table: currentTable } = booking;
+      const {
+        sitting: currentSitting,
+        date: currentDate,
+        table: currentTable,
+      } = booking;
       const updatedSitting = sitting || currentSitting;
       const updatedDate = date || currentDate;
-      const occupiedTables = await Booking.find({ sitting: updatedSitting, date: updatedDate });
+      const occupiedTables = await Booking.find({
+        sitting: updatedSitting,
+        date: updatedDate,
+      });
 
       if (occupiedTables.length + tablesNeeded > tablesPerSitting) {
         return res.status(400).json({
@@ -156,7 +184,10 @@ exports.updateBookingById = async (req, res) => {
       let remainingTablesNeeded = tablesNeeded;
       let currentTableNumber = 1;
 
-      while (remainingTablesNeeded > 0 && currentTableNumber <= tablesPerSitting) {
+      while (
+        remainingTablesNeeded > 0 &&
+        currentTableNumber <= tablesPerSitting
+      ) {
         if (!occupiedTableNumbers.includes(currentTableNumber)) {
           availableTables.push(currentTableNumber);
           remainingTablesNeeded--;
