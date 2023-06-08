@@ -1,6 +1,6 @@
 @use "variables" as var;
 
-html, body {
-    background-color: var.$bg;
-    color: white;
+html,
+body {
+  background-color: var.$bg;
 }
