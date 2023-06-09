@@ -18,7 +18,6 @@ export const AdminTable = () => {
 
   function removeBooking(id: string) {
     console.log(id);
-
     deleteBookingById(id);
   }
 
