@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { getAllBookings } from "../services/bookingServices";
+import { useEffect, useState } from "react";
+import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
 
 export const AdminTable = () => {
@@ -16,7 +16,11 @@ export const AdminTable = () => {
 
   const handleClick = () => {};
 
-  const removeBooking = () => {};
+  function removeBooking(id: string) {
+    console.log(id);
+
+    deleteBookingById(id);
+  }
 
   return (
     <>
@@ -35,7 +39,7 @@ export const AdminTable = () => {
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr>
+            <tr key={booking._id.toString()}>
               <td>{booking.date.toString()}</td>
               <td>{booking.firstName}</td>
               <td>{booking.lastName}</td>
@@ -46,7 +50,12 @@ export const AdminTable = () => {
                 <button onClick={handleClick}>Ändra</button>
               </td>
               <td>
-                <button onClick={removeBooking}>Ta Bort</button>
+                <button
+                  type="button"
+                  onClick={() => removeBooking(booking._id)}
+                >
+                  Ta Bort
+                </button>
               </td>
             </tr>
           ))}

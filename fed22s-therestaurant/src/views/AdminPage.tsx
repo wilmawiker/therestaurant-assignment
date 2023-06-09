@@ -20,14 +20,6 @@ const AdminPage = () => {
     <>
       <h3>AdminPage</h3>
       <AdminTable></AdminTable>
-      {/* {bookings.map((booking) => (
-        <div>
-          <p>{booking.date.toString()}</p>
-          <p>{booking.sitting.toString()}</p>
-          <p>{booking.numberOfPeople.toString()}</p>
-          <p>{booking.firstName}</p>
-        </div>S
-      ))} */}
     </>
   );
 };
