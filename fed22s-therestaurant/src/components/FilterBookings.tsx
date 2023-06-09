@@ -17,9 +17,14 @@ const FilterBookings = () => {
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(e.target.value.toLowerCase());
-    bookings.map((booking) => {
-      console.log(booking);
+    setSearchWord(e.target.value);
+    bookings.filter((booking) => {
+      booking.date.toLocaleDateString() === searchWord ||
+        booking.email.toLowerCase() === searchWord.toLowerCase() ||
+        booking.firstName.toLowerCase() === searchWord.toLowerCase() ||
+        booking.lastName.toLowerCase() === searchWord.toLowerCase() ||
+        booking.phoneNumber === searchWord;
+      return;
     });
     console.log(bookings);
   };

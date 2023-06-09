@@ -20,7 +20,7 @@ const AdminPage = () => {
 
   return (
     <>
-      <h3>AdminPage</h3>
+      <h3>Admin</h3>
       <FilterBookings></FilterBookings>
       <AdminTable></AdminTable>
     </>
