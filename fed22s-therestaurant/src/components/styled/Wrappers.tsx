@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
-export const GeneralWrapper = styled.div`
+interface IWrapperProps {
+  flexdirection: string;
+}
+
+export const GeneralWrapper = styled.div<IWrapperProps>`
   display: flex;
+  flex-direction: ${(props: IWrapperProps) => props.flexdirection || "row"};
   justify-content: center;
   align-items: center;
 `;
@@ -14,7 +19,7 @@ export const Wrapper = styled.div`
   gap: 10px;
   background-color: #ebe5d3;
   opacity: 80%;
-  width: 60%;
+  margin: 20px;
   border-radius: 15px;
   padding: 10px;
 `;

@@ -6,6 +6,7 @@ import BookingPage from "./views/BookingPage";
 import ContactPage from "./views/ContactPage";
 import Layout from "./components/Layout";
 import AdminPage from "./views/AdminPage";
+import GdprPage from "./views/GdprPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage></ContactPage>,
+      },
+      {
+        path: "/gdpr",
+        element: <GdprPage></GdprPage>,
       },
     ],
   },
