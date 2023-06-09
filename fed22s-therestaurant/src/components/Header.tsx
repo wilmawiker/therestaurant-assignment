@@ -13,9 +13,6 @@ export const Header = () => {
           <Link to="/">Hem</Link>
         </Li>
         <Li>
-          <Link to="/admin">Admin</Link>
-        </Li>
-        <Li>
           <Link to="/contact">Kontakt</Link>
         </Li>
         <Li>

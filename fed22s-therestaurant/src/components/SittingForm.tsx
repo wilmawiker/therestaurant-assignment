@@ -25,7 +25,6 @@ const SittingForm = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setBookingLs(booking);
     showDateForm(false);
     showCustomerForm(true);
   };

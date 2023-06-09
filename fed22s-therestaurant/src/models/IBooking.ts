@@ -11,6 +11,8 @@ export interface IBooking {
 }
 
 export const defaultBooking: IBooking = {
+  _id: "",
+  table: 0,
   numberOfPeople: 1,
   sitting: 1,
   date: new Date(),

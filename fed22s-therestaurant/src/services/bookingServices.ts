@@ -53,9 +53,9 @@ export async function createNewBooking({
   return response.data;
 }
 
-export async function deleteBookingById() {
+export async function deleteBookingById(id: string) {
   let response = await axios.delete<IBooking>(
-    "http://localhost:4000/api/v1/bookings/:bookingId"
+    `http://localhost:4000/api/v1/bookings/${id}`
   );
   console.log(response.data);
   console.log("Booking deleted");

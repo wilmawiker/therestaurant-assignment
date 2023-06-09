@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { IBooking } from "./../models/IBooking";
 import { getAllBookings } from "../services/bookingServices";
+import setBookingsLs from "../utils/setLS";
+import FilterBookings from "../components/FilterBookings";
+import { AdminTable } from "../components/AdminTable";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState<IBooking[]>([]);
@@ -9,23 +12,17 @@ const AdminPage = () => {
     const getData = async () => {
       getAllBookings().then((bookings) => {
         setBookings(bookings);
+        setBookingsLs(bookings);
       });
     };
     getData();
-    console.log(bookings);
   }, []);
 
   return (
     <>
-      <h3>AdminPage</h3>
-      {bookings.map((booking) => (
-        <div>
-          <p>{booking.date.toString()}</p>
-          <p>{booking.sitting.toString()}</p>
-          <p>{booking.numberOfPeople.toString()}</p>
-          <p>{booking.firstName}</p>
-        </div>
-      ))}
+      <h3>Admin</h3>
+      <FilterBookings bookings={bookings} set={setBookings}></FilterBookings>
+      <AdminTable bookings={bookings} set={setBookings}></AdminTable>
     </>
   );
 };
