@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import {
   InfoWrapper,
   ContactWrapper,
@@ -13,7 +12,6 @@ import { StyledP } from "../components/styled/StyledP";
 const ContactPage = () => {
   return (
     <>
-      <Header></Header>
       <GeneralWrapper>
         <Wrapper>
           <h3>Kontakta oss</h3>

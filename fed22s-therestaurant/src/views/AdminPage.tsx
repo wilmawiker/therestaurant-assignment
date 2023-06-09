@@ -3,6 +3,7 @@ import { IBooking } from "./../models/IBooking";
 import { getAllBookings } from "../services/bookingServices";
 import setBookingsLs from "../utils/setLS";
 import FilterBookings from "../components/FilterBookings";
+import { AdminTable } from "../components/AdminTable";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState<IBooking[]>([]);
@@ -19,8 +20,9 @@ const AdminPage = () => {
 
   return (
     <>
-      <h3>Admin</h3>
+      <h3>AdminPage</h3>
       <FilterBookings></FilterBookings>
+      <AdminTable></AdminTable>
     </>
   );
 };

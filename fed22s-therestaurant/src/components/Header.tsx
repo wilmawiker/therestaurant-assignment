@@ -1,31 +1,28 @@
-
-import { Link } from "react-router-dom"
-import { LandingPageButton } from "./styled/Buttons"
-import { StyledHeader } from "./styled/Header"
-
+import { Link } from "react-router-dom";
+import { Nav } from "./styled/Nav";
+import { Ul } from "./styled/Ul";
+import { Li } from "./styled/Li";
+import { LandingPageButton } from "./styled/Buttons";
 
 export const Header = () => {
-    return (
-        <StyledHeader>
-        <nav id="nav">
-        <ul>
-            <li>
-                <Link to="/">Hem</Link>
-            </li>
-            <li>
-                <Link to="/admin">Admin</Link>
-            </li>
-            <li>
-                <Link to="/book">
-                    <LandingPageButton>Boka Bord</LandingPageButton>
-                </Link>
-            </li>
-            <li>
+  return (
+    <Nav>
+      <h1>AWO</h1>
+      <Ul>
+        <Li>
+          <Link to="/">Hem</Link>
+        </Li>
+        <Li>
           <Link to="/contact">Kontakt</Link>
-        </li>
-        </ul>
-    </nav>
-    </StyledHeader>
-    )
-}
-
+        </Li>
+        <Li>
+          <Link to="/book">
+            <LandingPageButton bgcolor="red" color="white">
+              Boka Bord
+            </LandingPageButton>
+          </Link>
+        </Li>
+      </Ul>
+    </Nav>
+  );
+};
