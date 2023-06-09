@@ -21,8 +21,8 @@ const AdminPage = () => {
   return (
     <>
       <h3>Admin</h3>
-      <FilterBookings></FilterBookings>
-      <AdminTable></AdminTable>
+      <FilterBookings bookings={bookings} set={setBookings}></FilterBookings>
+      <AdminTable bookings={bookings} set={setBookings}></AdminTable>
     </>
   );
 };

@@ -1,37 +1,41 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import bookingFromLS from "../utils/getLS";
 import { IBooking } from "../models/IBooking";
 
-interface FilterSearch {
-  searchWord: string;
-  filteredList: IBooking[];
+interface FilterBookingsProps {
+  bookings: IBooking[];
+  set: (bookings: IBooking[]) => void;
 }
 
-const FilterBookings = () => {
+const FilterBookings = ({ bookings, set }: FilterBookingsProps) => {
   const [searchWord, setSearchWord] = useState("");
-  const [bookings, setBookings] = useState<IBooking[]>([]);
   const [filteredList, setFilteredList] = useState<IBooking[]>(bookings);
 
   useEffect(() => {
-    setBookings(bookingFromLS);
+    set(bookingFromLS);
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(e.target.value);
-    bookings.filter((booking) => {
-      booking.date.toLocaleDateString() === searchWord ||
-        booking.email.toLowerCase() === searchWord.toLowerCase() ||
-        booking.firstName.toLowerCase() === searchWord.toLowerCase() ||
-        booking.lastName.toLowerCase() === searchWord.toLowerCase() ||
-        booking.phoneNumber === searchWord;
-      return;
+    setSearchWord(e.target.value.toLowerCase());
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const filteredList = bookings.filter((booking) => {
+      return (
+        new Date(booking.date).toLocaleDateString().includes(searchWord) ||
+        booking.email.toLowerCase().includes(searchWord) ||
+        booking.firstName.toLowerCase().includes(searchWord) ||
+        booking.lastName.toLowerCase().includes(searchWord) ||
+        booking.phoneNumber.includes(searchWord)
+      );
     });
-    console.log(bookings);
+    set(filteredList);
   };
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input type="search" value={searchWord} onChange={handleChange} />
       </form>
       <ul>
