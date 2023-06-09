@@ -5,25 +5,23 @@ import { IBooking, defaultBooking } from "../models/IBooking";
 
 const BookingPage = () => {
   const [booking, setBooking] = useState<IBooking>(defaultBooking);
-  const [showForm, setShowForm] = useState(false);
+  const [showDateForm, setDateForm] = useState(true);
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
   return (
     <>
       <h3>Bokningssida</h3>
       <DateForm
         booking={booking}
         add={setBooking}
-        show={setShowForm}
+        dateForm={showDateForm}
+        showDateForm={setDateForm}
+        showCustomerForm={setShowCustomerForm}
       ></DateForm>
-      <CustomerForm booking={booking} add={setBooking}></CustomerForm>
-      <div>
-        <p>{booking.firstName}</p>
-        <p>{booking.lastName}</p>
-        <p>{booking.email}</p>
-        <p>{booking.phoneNumber}</p>
-        <p>{booking.date.toDateString()}</p>
-        <p>{booking.numberOfPeople.toString()}</p>
-        <p>{booking.sitting.toString()}</p>
-      </div>
+      <CustomerForm
+        booking={booking}
+        add={setBooking}
+        showForm={showCustomerForm}
+      ></CustomerForm>
     </>
   );
 };

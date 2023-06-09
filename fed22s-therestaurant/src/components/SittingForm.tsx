@@ -7,10 +7,17 @@ interface SittingFormProps {
   booking: IBooking;
   add: (booking: IBooking) => void;
   showTime: boolean;
+  showDateForm: (showDate: boolean) => void;
+  showCustomerForm: (showCustomer: boolean) => void;
 }
 
-const SittingForm = ({ booking, add, showTime }: SittingFormProps) => {
-  const [showCustomerForm, setShowForm] = useState(false);
+const SittingForm = ({
+  booking,
+  add,
+  showTime,
+  showDateForm,
+  showCustomerForm,
+}: SittingFormProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     add({ ...booking, [name]: e.target.value });
@@ -20,7 +27,8 @@ const SittingForm = ({ booking, add, showTime }: SittingFormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setBookingLs(booking);
-    setShowForm(true);
+    showDateForm(false);
+    showCustomerForm(true);
   };
   return (
     <div>
