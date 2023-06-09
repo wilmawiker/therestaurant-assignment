@@ -14,3 +14,5 @@ export const Button = styled.button<IButtonProps>`
 `;
 
 export const LandingPageButton = styled(Button)``;
+
+export const GDPRButton = styled(Button)``;

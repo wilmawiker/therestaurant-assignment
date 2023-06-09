@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IBooking } from "../models/IBooking";
 import { createNewBooking, getAllBookings } from "../services/bookingServices";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
 interface ICustomerFormInput {
   firstName: string;
@@ -26,6 +26,12 @@ const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     add({ ...booking, [name]: e.target.value });
+  };
+
+  const [disabled, setDisabled] = useState(true);
+
+  const isDisabled = () => {
+    setDisabled(!disabled);
   };
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
@@ -85,7 +91,12 @@ const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
               name="phoneNumber"
               onChange={handleChange}
             />
-            <input type="submit" />
+            <br />
+            <label htmlFor="gdprCheck">
+              Jag godkänner hanteringen av mina personuppgifter.
+            </label>
+            <input type="checkbox" onChange={isDisabled} id="gdprCheck" />
+            <input type="submit" disabled={disabled} />
           </form>
         </Wrapper>
       ) : null}
