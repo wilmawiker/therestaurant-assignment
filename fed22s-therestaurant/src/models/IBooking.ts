@@ -1,6 +1,6 @@
 export interface IBooking {
-  id?: number;
-  table?: number[];
+  _id: string;
+  table: number;
   numberOfPeople: number;
   sitting: number;
   date: Date;
