@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { IBooking, defaultBooking } from "../models/IBooking";
@@ -6,43 +6,39 @@ import setBookingLs from "../utils/setLS";
 import SittingForm from "./SittingForm";
 import { ValuePiece } from "../utils/valuePiece";
 import { Wrapper } from "./styled/Wrappers";
+import { BookingDispatchContext } from "../contexts/BookingContext";
+import { ActionType } from "../reducers/BookingReducer";
 
 interface IDateFormProps {
-  booking: IBooking;
-  add: (booking: IBooking) => void;
   dateForm: boolean;
   showDateForm: (showDate: boolean) => void;
   showCustomerForm: (showCustomer: boolean) => void;
 }
 
 const DateForm = ({
-  booking,
-  add,
   dateForm,
   showDateForm,
   showCustomerForm,
 }: IDateFormProps) => {
+  const dispatch = useContext(BookingDispatchContext);
   const [date, setDate] = useState<ValuePiece | [ValuePiece, ValuePiece]>(
     new Date()
   );
   const [showTime, setShowTime] = useState(false);
 
   const handlePeopleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const name = e.target.name;
-    add({ ...booking, [name]: e.target.value });
-    console.log(booking);
+    dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: e.target.value });
   };
 
   const handleDateChange = (date: ValuePiece | [ValuePiece, ValuePiece]) => {
     setDate(date);
     const chosenDate = date?.toString() as string;
-    add({ ...booking, date: new Date(chosenDate) });
+    dispatch({ type: ActionType.DATE, payload: chosenDate });
     setShowTime(true);
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Hej");
   };
   return (
     <>
@@ -71,8 +67,6 @@ const DateForm = ({
               />
             </form>
             <SittingForm
-              booking={booking}
-              add={add}
               showTime={showTime}
               showDateForm={showDateForm}
               showCustomerForm={showCustomerForm}
