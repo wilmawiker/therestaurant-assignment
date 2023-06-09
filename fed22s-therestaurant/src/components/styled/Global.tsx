@@ -22,5 +22,5 @@ p {
 img {
     max-width: 100% 
 }
-`
-export default GlobalStyles 
+`;
+export default GlobalStyles;

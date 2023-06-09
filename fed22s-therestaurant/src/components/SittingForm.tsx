@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { IBooking, defaultBooking } from "../models/IBooking";
 import setBookingLs from "../utils/setLS";
-import { ValuePiece } from "../utils/valuePiece";
 
 interface SittingFormProps {
   booking: IBooking;
