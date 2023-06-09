@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Booking = require("./models/Booking");
-require('dotenv').config();
+require("dotenv").config();
 
 mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`, {
   useNewUrlParser: true,
@@ -19,12 +19,14 @@ async function seedDb() {
     for (let i = 0; i < totalTables; i++) {
       const tableNumber = i + 1;
       const sitting = i < tablesPerSitting ? 1 : 2;
-
       const newBooking = new Booking({
         table: tableNumber,
         numberOfPeople: defaultTableSize,
         sitting,
+        firstName: "",
+        lastName: "",
         email: "",
+        phoneNumber: "",
         date: new Date(),
       });
 
