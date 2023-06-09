@@ -14,6 +14,15 @@ export const AdminTable = () => {
     getData();
   }, []);
 
+  const todaysBookings = bookings.filter((booking) => {
+    return (
+      new Date(booking.date).toLocaleDateString() ==
+      new Date().toLocaleDateString()
+    );
+  });
+
+  console.log(todaysBookings);
+
   const handleClick = () => {};
 
   function removeBooking(id: string) {
@@ -39,7 +48,7 @@ export const AdminTable = () => {
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking._id.toString()}>
-              <td>{booking.date.toString()}</td>
+              <td>{new Date(booking.date).toLocaleDateString()}</td>
               <td>{booking.firstName}</td>
               <td>{booking.lastName}</td>
               <td>{booking.numberOfPeople.toString()}</td>
@@ -58,7 +67,6 @@ export const AdminTable = () => {
               </td>
             </tr>
           ))}
-          ;
         </tbody>
       </table>
     </>
