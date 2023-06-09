@@ -18,6 +18,14 @@ export async function getBookingById() {
   return response.data;
 }
 
+export async function getBookingsByDate(date: string, sitting: number) {
+  const url = `http://localhost:4000/api/v1/bookings/date/${date}?sitting=${sitting}`;
+  const response = await axios.get<any>(url);
+  const bookings = response.data.data;
+  console.log(bookings);
+  return bookings;
+}
+
 export async function createNewBooking({
   numberOfPeople,
   sitting,

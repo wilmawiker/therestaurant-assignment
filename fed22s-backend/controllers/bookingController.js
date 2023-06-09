@@ -31,6 +31,42 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+exports.getAllBookingsByDate = async (req, res) => {
+  try {
+    const { date } = req.params;
+    const startDate = new Date(date);
+    const endDate = new Date(date);
+    endDate.setDate(endDate.getDate() + 1);
+
+    let query = {
+      date: { $gte: startDate, $lt: endDate },
+    };
+
+    if (req.query.sitting) {
+      query.sitting = req.query.sitting;
+    }
+
+    const bookings = await Booking.find(query);
+
+    if (bookings.length === 0) {
+      return res.status(404).json({
+        message: "No bookings found for the specified date and sitting.",
+      });
+    }
+
+    return res.json({
+      data: bookings,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
+
 exports.createNewBooking = async (req, res) => {
   try {
     const {
@@ -103,7 +139,7 @@ exports.createNewBooking = async (req, res) => {
       lastName,
       email,
       phoneNumber,
-      date,
+      date: date,
     });
 
     return res.status(201).json(newBooking);

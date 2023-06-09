@@ -1,13 +1,13 @@
 export interface IBooking {
-  id?: Number;
-  table?: Number;
-  numberOfPeople: Number;
-  sitting: Number;
+  id?: number;
+  table?: number[];
+  numberOfPeople: number;
+  sitting: number;
   date: Date;
-  firstName: String;
-  lastName: String;
-  email: String;
-  phoneNumber: String;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export const defaultBooking: IBooking = {
