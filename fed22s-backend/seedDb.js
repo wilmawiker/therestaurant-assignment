@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 const Booking = require("./models/Booking");
 require("dotenv").config();
+const {
+  randFirstName,
+  randLastName,
+  randEmail,
+  randPhoneNumber,
+  randNumber,
+} = require("@ngneat/falso");
 
 mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`, {
   useNewUrlParser: true,
@@ -8,7 +15,7 @@ mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`, {
 });
 
 const tablesPerSitting = 15;
-const defaultTableSize = 0;
+const defaultTableSize = 2;
 
 async function seedDb() {
   try {
@@ -23,10 +30,10 @@ async function seedDb() {
         table: tableNumber,
         numberOfPeople: defaultTableSize,
         sitting,
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
+        firstName: randFirstName(),
+        lastName: randLastName(),
+        email: randEmail(),
+        phoneNumber: randPhoneNumber(),
         date: new Date(),
       });
 
