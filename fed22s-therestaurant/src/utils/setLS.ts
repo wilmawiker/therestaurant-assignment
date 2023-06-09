@@ -1,7 +1,7 @@
 import { IBooking } from "../models/IBooking";
 
-const setBookingLs = (booking: IBooking) => {
-    localStorage.setItem("booking", JSON.stringify(booking));
-}
+const setBookingsLs = (bookings: IBooking[]) => {
+  localStorage.setItem("bookings", JSON.stringify(bookings));
+};
 
-export default setBookingLs;
+export default setBookingsLs;
