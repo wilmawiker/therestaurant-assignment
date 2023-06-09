@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
 
-export const AdminTable = () => {
-  const [bookings, setBookings] = useState<IBooking[]>([]);
+interface FilterBookingsProps {
+  bookings: IBooking[];
+  set: (bookings: IBooking[]) => void;
+}
 
+export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
   useEffect(() => {
     const getData = async () => {
       getAllBookings().then((bookings) => {
-        setBookings(bookings);
+        set(bookings);
       });
     };
     getData();
