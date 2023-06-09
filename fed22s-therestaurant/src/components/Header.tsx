@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Nav } from "./styled/Nav";
 import { Ul } from "./styled/Ul";
 import { Li } from "./styled/Li";
-import { LandingPageButton } from "./styled/Buttons"
+import { LandingPageButton } from "./styled/Buttons";
 
 export const Header = () => {
   return (
@@ -12,16 +12,18 @@ export const Header = () => {
         <Li>
           <Link to="/">Hem</Link>
         </Li>
-          <li>
-                <Link to="/admin">Admin</Link>
-            </li>
         <Li>
-          <Link to="/book">
-                    <LandingPageButton>Boka Bord</LandingPageButton>
-          </Link>
+          <Link to="/admin">Admin</Link>
         </Li>
         <Li>
           <Link to="/contact">Kontakt</Link>
+        </Li>
+        <Li>
+          <Link to="/book">
+            <LandingPageButton bgcolor="red" color="white">
+              Boka Bord
+            </LandingPageButton>
+          </Link>
         </Li>
       </Ul>
     </Nav>

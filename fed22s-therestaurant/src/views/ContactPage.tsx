@@ -13,7 +13,6 @@ import { StyledP } from "../components/styled/StyledP";
 const ContactPage = () => {
   return (
     <>
-      <Header></Header>
       <GeneralWrapper>
         <Wrapper>
           <h3>Kontakta oss</h3>

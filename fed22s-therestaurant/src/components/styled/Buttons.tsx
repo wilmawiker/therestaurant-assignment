@@ -13,7 +13,4 @@ export const Button = styled.button<IButtonProps>`
   margin: 15px;
 `;
 
-export const LandingPageButton = styled(Button)`
-  background-color: red;
-  color: white;
-`;
+export const LandingPageButton = styled(Button)``;
