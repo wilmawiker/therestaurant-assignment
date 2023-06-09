@@ -1,8 +1,13 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IBooking } from "../models/IBooking";
 import { createNewBooking, getAllBookings } from "../services/bookingServices";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
+import {
+  BookingContext,
+  BookingDispatchContext,
+} from "../contexts/BookingContext";
+import { ActionType } from "../reducers/BookingReducer";
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
@@ -11,12 +16,12 @@ interface ICustomerFormInput {
 }
 
 interface ICustormerFormProps {
-  booking: IBooking;
-  add: (booking: IBooking) => void;
   showForm: boolean;
 }
 
-const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
+const CustomerForm = ({ showForm }: ICustormerFormProps) => {
+  const dispatch = useContext(BookingDispatchContext);
+  const booking = useContext(BookingContext);
   const {
     handleSubmit,
     register,
@@ -25,7 +30,26 @@ const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
-    add({ ...booking, [name]: e.target.value });
+    switch (name) {
+      case "firstName":
+        dispatch({ type: ActionType.FIRSTNAME, payload: e.target.value });
+        break;
+
+      case "lastName":
+        dispatch({ type: ActionType.LASTNAME, payload: e.target.value });
+        break;
+
+      case "email":
+        dispatch({ type: ActionType.EMAIL, payload: e.target.value });
+        break;
+
+      case "phoneNumber":
+        dispatch({ type: ActionType.PHONENUMBER, payload: e.target.value });
+        break;
+
+      default:
+        break;
+    }
   };
 
   const [disabled, setDisabled] = useState(true);
@@ -35,6 +59,8 @@ const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
   };
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
+    console.log(booking);
+
     createNewBooking(booking);
   };
   return (
@@ -43,13 +69,14 @@ const CustomerForm = ({ booking, add, showForm }: ICustormerFormProps) => {
         <Wrapper>
           <div>
             <p>
-              <b>Datum:</b> {booking.date.toDateString()}
+              <b>Datum:</b>{" "}
+              {new Date(booking.date.toString()).toLocaleDateString()}
             </p>
             <p>
               <b>Gäster:</b> {booking.numberOfPeople.toString()}
             </p>
             <p>
-              <b>Tid:</b> {booking.sitting === 1 ? "18-21" : "21-23"}
+              <b>Tid:</b> {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>

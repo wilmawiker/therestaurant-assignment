@@ -1,26 +1,24 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { IBooking, defaultBooking } from "../models/IBooking";
 import setBookingLs from "../utils/setLS";
+import { BookingDispatchContext } from "../contexts/BookingContext";
+import { ActionType } from "../reducers/BookingReducer";
 
 interface SittingFormProps {
-  booking: IBooking;
-  add: (booking: IBooking) => void;
   showTime: boolean;
   showDateForm: (showDate: boolean) => void;
   showCustomerForm: (showCustomer: boolean) => void;
 }
 
 const SittingForm = ({
-  booking,
-  add,
   showTime,
   showDateForm,
   showCustomerForm,
 }: SittingFormProps) => {
+  const dispatch = useContext(BookingDispatchContext);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    add({ ...booking, [name]: e.target.value });
-    console.log(booking);
+    dispatch({ type: ActionType.SITTING, payload: e.target.value });
   };
 
   const handleSubmit = (e: FormEvent) => {
