@@ -15,10 +15,7 @@ export enum ActionType {
   PHONENUMBER,
 }
 
-export const BookingReducer = (
-  booking: IBooking,
-  action: IAction
-): IBooking => {
+const BookingReducer = (booking: IBooking, action: IAction): IBooking => {
   switch (action.type) {
     case ActionType.NUMBEROFPEOPLE: {
       return { ...booking, numberOfPeople: action.payload };
@@ -51,3 +48,5 @@ export const BookingReducer = (
 
   return booking;
 };
+
+export default BookingReducer;
