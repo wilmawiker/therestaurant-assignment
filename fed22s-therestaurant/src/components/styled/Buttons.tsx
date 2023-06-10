@@ -15,4 +15,8 @@ export const Button = styled.button<IButtonProps>`
 
 export const LandingPageButton = styled(Button)``;
 
-export const GDPRButton = styled(Button)``;
+export const GDPRButton = styled(Button)`
+  padding: 0.5rem;
+  border-radius: 15px;
+  margin: 15px;
+`;

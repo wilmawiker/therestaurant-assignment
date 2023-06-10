@@ -3,6 +3,7 @@ import { IBooking, defaultBooking } from "../models/IBooking";
 import setBookingLs from "../utils/setLS";
 import { BookingDispatchContext } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
+import { StyledP } from "./styled/StyledP";
 
 interface SittingFormProps {
   showTime: boolean;
@@ -31,7 +32,9 @@ const SittingForm = ({
       {showTime ? (
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="18">kl 18</label>
+            <label htmlFor="18">
+              <StyledP>kl 18</StyledP>
+            </label>
             <input
               type="radio"
               name="sitting"
@@ -41,7 +44,9 @@ const SittingForm = ({
             />
           </div>
           <div>
-            <label htmlFor="21">kl 21</label>
+            <label htmlFor="21">
+              <StyledP>kl 21</StyledP>
+            </label>
             <input
               type="radio"
               name="sitting"
