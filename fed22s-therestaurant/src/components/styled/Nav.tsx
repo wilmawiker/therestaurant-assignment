@@ -6,4 +6,5 @@ export const Nav = styled.nav`
   justify-content: space-between;
   padding: 10px;
   background-color: #00000040;
+  font-family: "Poppins";
 `;

@@ -9,7 +9,7 @@ import {
   BookingContext,
   BookingDispatchContext,
 } from "../contexts/BookingContext";
-import { BookingReducer } from "../reducers/BookingReducer";
+import BookingReducer from "../reducers/BookingReducer";
 
 const BookingPage = () => {
   const [booking, dispatch] = useReducer(BookingReducer, defaultBooking);
@@ -27,7 +27,9 @@ const BookingPage = () => {
           ></DateForm>
           <CustomerForm showForm={showCustomerForm}></CustomerForm>
           <Link to="/gdpr">
-            <GDPRButton>Personuppgiftspolicy</GDPRButton>
+            <GDPRButton bgcolor="gray" color="white">
+              Personuppgiftspolicy
+            </GDPRButton>
           </Link>
         </GeneralWrapper>
       </BookingDispatchContext.Provider>

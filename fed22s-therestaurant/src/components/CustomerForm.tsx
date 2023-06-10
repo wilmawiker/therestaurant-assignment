@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IBooking } from "../models/IBooking";
 import { createNewBooking, getAllBookings } from "../services/bookingServices";
 import { ChangeEvent, useContext, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
@@ -8,6 +7,7 @@ import {
   BookingDispatchContext,
 } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
+import { StyledP } from "./styled/StyledP";
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
@@ -69,14 +69,27 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
         <Wrapper>
           <div>
             <p>
-              <b>Datum:</b>{" "}
-              {new Date(booking.date.toString()).toLocaleDateString()}
+              <b>
+                <StyledP>Datum:</StyledP>
+              </b>{" "}
+              <StyledP>
+                {new Date(booking.date.toString()).toLocaleDateString()}
+              </StyledP>
             </p>
             <p>
-              <b>Gäster:</b> {booking.numberOfPeople.toString()}
+              <b>
+                <StyledP>Gäster:</StyledP>
+              </b>{" "}
+              <StyledP>{booking.numberOfPeople.toString()}</StyledP>
             </p>
             <p>
-              <b>Tid:</b> {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
+              <b>
+                <StyledP>Tid:</StyledP>
+              </b>
+              <StyledP>
+                {" "}
+                {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
+              </StyledP>
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,6 +99,7 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               {...register("firstName", { required: true, maxLength: 80 })}
               name="firstName"
               onChange={handleChange}
+              style={{ fontFamily: "Poppins" }}
             />
             <input
               type="text"
@@ -93,6 +107,7 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               {...register("lastName", { required: true, maxLength: 100 })}
               name="lastName"
               onChange={handleChange}
+              style={{ fontFamily: "Poppins" }}
             />
             <input
               type="email"
@@ -106,6 +121,7 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               })}
               name="email"
               onChange={handleChange}
+              style={{ fontFamily: "Poppins" }}
             />
             <input
               type="tel"
@@ -117,10 +133,13 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               })}
               name="phoneNumber"
               onChange={handleChange}
+              style={{ fontFamily: "Poppins" }}
             />
             <br />
             <label htmlFor="gdprCheck">
-              Jag godkänner hanteringen av mina personuppgifter.
+              <StyledP>
+                Jag godkänner hanteringen av mina personuppgifter.
+              </StyledP>
             </label>
             <input type="checkbox" onChange={isDisabled} id="gdprCheck" />
             <input type="submit" disabled={disabled} />

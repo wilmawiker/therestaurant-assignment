@@ -8,6 +8,7 @@ import { ValuePiece } from "../utils/valuePiece";
 import { Wrapper } from "./styled/Wrappers";
 import { BookingDispatchContext } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
+import { StyledP } from "./styled/StyledP";
 
 interface IDateFormProps {
   dateForm: boolean;
@@ -47,11 +48,14 @@ const DateForm = ({
         {dateForm ? (
           <Wrapper>
             <form onSubmit={handleSubmit}>
-              <label htmlFor="guests">Antal gäster:</label>
+              <label htmlFor="guests">
+                <StyledP>Antal gäster:</StyledP>
+              </label>
               <select
                 name="numberOfPeople"
                 id="guests"
                 onChange={handlePeopleChange}
+                style={{ fontFamily: "Poppins" }}
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
