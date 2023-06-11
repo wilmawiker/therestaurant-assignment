@@ -14,6 +14,7 @@ body {
     font-family: sans-serif; 
     font-size: 1.15em; 
     margin: 0;
+    max-width: 100vw;
 }
 
 p {

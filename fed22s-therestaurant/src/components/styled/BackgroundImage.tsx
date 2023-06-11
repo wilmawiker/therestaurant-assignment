@@ -2,7 +2,7 @@ import styled from "styled-components";
 import backgroundImage from "../../assets/pizza_background.jpg";
 
 export const BackgroundImage = styled.div`
-  width: 100vw;
+  max-width: 100vw;
   height: 100vh;
   background-size: cover;
   background-position: center;

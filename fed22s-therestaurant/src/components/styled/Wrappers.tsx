@@ -10,7 +10,7 @@ export const GeneralWrapper = styled.div<IWrapperProps>`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  min-width: 100vw;
+  max-width: 100vw;
   margin: 0;
   padding: 0;
 `;
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background-color: #ebe5d3;
+  background-color: white;
   opacity: 80%;
   margin: 20px;
   border-radius: 15px;

@@ -17,7 +17,7 @@ const Layout = () => {
           <GeneralWrapper flexdirection="column">
             <Outlet></Outlet>
           </GeneralWrapper>
-          <Footer></Footer>
+          {/* <Footer></Footer> */}
         </BackgroundImage>
       </main>
     </>
