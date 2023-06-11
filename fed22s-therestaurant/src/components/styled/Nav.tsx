@@ -5,5 +5,4 @@ export const Nav = styled.nav`
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
-  background-color: #00000040;
 `;
