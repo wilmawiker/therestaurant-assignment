@@ -9,6 +9,8 @@ import {
 
 import { Link } from "react-router-dom";
 import { LandingPageButton } from "../components/styled/Buttons";
+import { StyledH1 } from "../components/styled/StyledH1";
+import { GeneralWrapper } from "../components/styled/Wrappers";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -21,11 +23,14 @@ const LandingPage = () => {
 
   return (
     <>
-      <div>
+      <GeneralWrapper flexdirection="column">
+        <StyledH1 fontSize="4rem">WAIO</StyledH1>
         <Link to="/book">
-          <LandingPageButton>Boka Bord</LandingPageButton>
+          <LandingPageButton bgcolor="red" color="white">
+            Boka Bord
+          </LandingPageButton>
         </Link>
-      </div>
+      </GeneralWrapper>
     </>
   );
 };
