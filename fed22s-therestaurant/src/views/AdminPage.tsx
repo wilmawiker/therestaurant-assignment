@@ -4,6 +4,7 @@ import { getAllBookings } from "../services/bookingServices";
 import setBookingsLs from "../utils/setLS";
 import FilterBookings from "../components/FilterBookings";
 import { AdminTable } from "../components/AdminTable";
+import { BackgroundImage } from "../components/styled/BackgroundImage";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState<IBooking[]>([]);
