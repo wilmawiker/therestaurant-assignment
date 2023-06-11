@@ -5,6 +5,7 @@ import setBookingsLs from "../utils/setLS";
 import FilterBookings from "../components/FilterBookings";
 import { AdminTable } from "../components/AdminTable";
 import { BackgroundImage } from "../components/styled/BackgroundImage";
+import { StyledH1 } from "../components/styled/StyledH1";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState<IBooking[]>([]);
@@ -21,7 +22,7 @@ const AdminPage = () => {
 
   return (
     <>
-      <h3>Admin</h3>
+      <StyledH1 fontSize="2rem">Admin</StyledH1>
       <FilterBookings bookings={bookings} set={setBookings}></FilterBookings>
       <AdminTable bookings={bookings} set={setBookings}></AdminTable>
     </>

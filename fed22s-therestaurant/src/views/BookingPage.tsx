@@ -27,7 +27,7 @@ const BookingPage = () => {
           ></DateForm>
           <CustomerForm showForm={showCustomerForm}></CustomerForm>
           <Link to="/gdpr">
-            <GDPRButton bgcolor="gray" color="white">
+            <GDPRButton bgcolor="gray" color="white" fontSize="0.8rem">
               Personuppgiftspolicy
             </GDPRButton>
           </Link>

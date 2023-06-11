@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Nav } from "./styled/Nav";
 import { Ul } from "./styled/Ul";
 import { Li } from "./styled/Li";
-import { LandingPageButton } from "./styled/Buttons";
+import { Button } from "./styled/Buttons";
 import { StyledHeader } from "./styled/Header";
 import { StyledH1 } from "./styled/StyledH1";
 
@@ -19,9 +19,9 @@ export const Header = () => {
         </Li>
         <Li>
           <Link to="/book">
-            <LandingPageButton bgcolor="red" color="white">
+            <Button bgcolor="red" color="white" fontSize="1rem">
               Boka Bord
-            </LandingPageButton>
+            </Button>
           </Link>
         </Li>
       </Ul>

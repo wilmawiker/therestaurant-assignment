@@ -8,7 +8,7 @@ import {
 } from "../services/bookingServices";
 
 import { Link } from "react-router-dom";
-import { LandingPageButton } from "../components/styled/Buttons";
+import { Button, LandingPageButton } from "../components/styled/Buttons";
 import { StyledH1 } from "../components/styled/StyledH1";
 import { GeneralWrapper } from "../components/styled/Wrappers";
 
@@ -26,9 +26,9 @@ const LandingPage = () => {
       <GeneralWrapper flexdirection="column">
         <StyledH1 fontSize="4rem">WAIO</StyledH1>
         <Link to="/book">
-          <LandingPageButton bgcolor="red" color="white">
+          <Button bgcolor="red" color="white" fontSize="1.3rem">
             Boka Bord
-          </LandingPageButton>
+          </Button>
         </Link>
       </GeneralWrapper>
     </>
