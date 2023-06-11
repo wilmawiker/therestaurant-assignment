@@ -38,11 +38,6 @@ const FilterBookings = ({ bookings, set }: FilterBookingsProps) => {
       <form onSubmit={handleSubmit}>
         <input type="search" value={searchWord} onChange={handleChange} />
       </form>
-      <ul>
-        {filteredList.map((booking) => (
-          <li key={booking._id?.toString()}>{booking.firstName}</li>
-        ))}
-      </ul>
     </div>
   );
 };
