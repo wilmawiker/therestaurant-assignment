@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
+import { Wrapper } from "./styled/Wrappers";
+import { Button } from "./styled/Buttons";
 
 interface FilterBookingsProps {
   bookings: IBooking[];
@@ -34,7 +36,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
   }
 
   return (
-    <>
+    <Wrapper>
       <table>
         <thead>
           <tr>
@@ -58,20 +60,30 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
               <td>{booking.table?.toString()}</td>
               <td>{booking.sitting.toString()}</td>
               <td>
-                <button onClick={handleClick}>Ändra</button>
+                <Button
+                  bgcolor="black"
+                  color="white"
+                  fontSize="0.7rem"
+                  onClick={handleClick}
+                >
+                  Ändra
+                </Button>
               </td>
               <td>
-                <button
+                <Button
+                  bgcolor="red"
+                  color="white"
+                  fontSize="0.7rem"
                   type="button"
                   onClick={() => removeBooking(booking._id)}
                 >
                   Ta Bort
-                </button>
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </>
+    </Wrapper>
   );
 };
