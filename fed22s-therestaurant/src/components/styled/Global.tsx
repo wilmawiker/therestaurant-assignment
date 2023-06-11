@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-export const GlobalStyles = createGlobalStyle`
+export default createGlobalStyle`
 
 * {
     padding: 0;
@@ -25,4 +25,3 @@ img {
     max-width: 100% 
 }
 `;
-export default GlobalStyles;
