@@ -10,7 +10,7 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Ul>
-        <StyledH1>AWO</StyledH1>
+        <StyledH1 fontSize="1.5rem">WAIO</StyledH1>
         <Li>
           <Link to="/">Hem</Link>
         </Li>
