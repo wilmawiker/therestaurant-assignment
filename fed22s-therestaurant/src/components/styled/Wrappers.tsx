@@ -9,6 +9,10 @@ export const GeneralWrapper = styled.div<IWrapperProps>`
   flex-direction: ${(props: IWrapperProps) => props.flexdirection || "row"};
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: 0;
 `;
 
 export const Wrapper = styled.div`

@@ -5,4 +5,5 @@ export const StyledHeader = styled.header`
   margin: 0;
   padding: 0;
   height: 15vh;
+  width: 100vw;
 `;

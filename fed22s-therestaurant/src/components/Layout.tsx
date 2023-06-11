@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import GlobalFonts from "../fonts/fonts";
+import { GeneralWrapper } from "./styled/Wrappers";
 
 const Layout = () => {
   return (
@@ -9,7 +10,9 @@ const Layout = () => {
       <main>
         <GlobalFonts />
         <Header></Header>
-        <Outlet></Outlet>
+        <GeneralWrapper flexdirection="column">
+          <Outlet></Outlet>
+        </GeneralWrapper>
         <Footer></Footer>
       </main>
     </>
