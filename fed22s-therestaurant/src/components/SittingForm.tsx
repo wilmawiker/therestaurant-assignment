@@ -4,6 +4,7 @@ import setBookingLs from "../utils/setLS";
 import { BookingDispatchContext } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
 import { StyledP } from "./styled/StyledP";
+import { Button } from "./styled/Buttons";
 
 interface SittingFormProps {
   showTime: boolean;
@@ -30,7 +31,7 @@ const SittingForm = ({
   return (
     <div>
       {showTime ? (
-        <form onSubmit={handleSubmit}>
+        <form id="sittings" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="18">
               <StyledP>kl 18</StyledP>
@@ -55,7 +56,14 @@ const SittingForm = ({
               onChange={handleChange}
             />
           </div>
-          <button type="submit">Välj</button>
+          <Button
+                  bgcolor="red"
+                  color="white"
+                  fontSize="0.9rem"
+                  type="submit"
+                >
+                  Välj
+                </Button>
         </form>
       ) : null}
     </div>

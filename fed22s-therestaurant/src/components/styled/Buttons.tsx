@@ -12,10 +12,14 @@ export const Button = styled.button<IButtonProps>`
   padding: 0.5rem;
   border-radius: 15px;
   border: none;
-  margin: 15px;
   font-family: "Poppins";
+  transition: 300ms;
+  transform: scale(0.9);
   font-size: ${(props: IButtonProps) => props.fontSize || "1rem"};
-  cursor: pointer;
+  &:hover{
+    cursor: pointer;
+    transform: scale(1);
+  }
 `;
 
 export const LandingPageButton = styled(Button)``;
