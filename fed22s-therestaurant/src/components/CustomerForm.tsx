@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 import { createNewBooking } from "../services/bookingServices";
 import { ChangeEvent, useContext, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
@@ -28,7 +29,9 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<ICustomerFormInput>();
+  } = useForm<ICustomerFormInput>({
+    criteriaMode: "all",
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -217,44 +220,134 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
             <input
               type="text"
               placeholder="Förnamn"
-              {...register("firstName", { required: true, maxLength: 80 })}
+              {...register("firstName", {
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                maxLength: {
+                  value: 80,
+                  message: "Texten överskrider maxgränsen.",
+                },
+                minLength: {
+                  value: 2,
+                  message: "Du måste ange minst 2 tecken.",
+                },
+              })}
               name="firstName"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="firstName"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <input
               type="text"
               placeholder="Efternamn"
-              {...register("lastName", { required: true, maxLength: 100 })}
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                maxLength: {
+                  value: 100,
+                  message: "Texten överskrider maxgränsen.",
+                },
+                minLength: {
+                  value: 2,
+                  message: "Du måste ange minst 2 tecken.",
+                },
+              })}
               name="lastName"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="lastName"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
             />
             <input
               type="email"
               placeholder="Mailadress"
               {...register("email", {
-                required: "Required",
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "invalid email address",
+                  message: "Du måste ange en korrekt mailadress.",
                 },
               })}
               name="email"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <input
               type="tel"
               placeholder="Telefonnummer"
               {...register("phoneNumber", {
-                required: true,
-                minLength: 6,
-                maxLength: 12,
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Måste ange ett korrekt telefonnummer.",
+                },
+                minLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
               })}
               name="phoneNumber"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="phoneNumber"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
             />
             <br />
             <label htmlFor="gdprCheck">
