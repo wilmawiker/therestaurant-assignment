@@ -59,72 +59,75 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
 
   const checkIfBookingPossible = async () => {
     const { sitting, date, numberOfPeople } = booking;
-  
+    
     try {
-      let bookingDate = new Date(booking.date.toString().slice(0, 10));
+      let bookingDate = new Date(date);
+    
       bookingDate.setDate(bookingDate.getDate() + 1);
-
-
-      console.log(bookingDate);
-  
-      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate}?sitting=${sitting}`;
-  
+    
+      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate.toISOString().slice(0, 10)}?sitting=${sitting}`;
+    
       let existingBookings: IBooking[] = [];
-  
+    
       try {
         const response = await axios.get<any>(url);
         existingBookings = response.data.data;
-        console.log(existingBookings);
+        console.log("Filtered Bookings:", existingBookings);
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
-          console.log(
-            "No existing bookings found for the selected date."
-          );
+          console.log("No existing bookings found for the selected date.");
         } else {
           throw error;
         }
       }
-  
-      // Filter existing bookings by the selected sitting
-      const bookingsForSitting = existingBookings.filter(
-        (booking) => booking.sitting === sitting
-      );
-  
-      // Calculate the total number of people in existing bookings for the selected sitting
-      const totalPeopleInSitting = bookingsForSitting.reduce(
+    
+      // Calculate the total number of people already booked for the selected sitting and date
+      const totalPeopleForSittingAndDate = existingBookings.reduce(
         (total, booking) => total + booking.numberOfPeople,
         0
       );
+      
+      console.log(totalPeopleForSittingAndDate);
   
       // Calculate the remaining available seats in the sitting
-      const remainingSeats = 90 - totalPeopleInSitting;
+      const remainingSeats = 90 - totalPeopleForSittingAndDate;
   
-      if (numberOfPeople > remainingSeats) {
+      // Calculate the number of tables needed based on the number of guests and the table capacity
+      const tablesNeeded = Math.ceil(numberOfPeople / 6);
+  
+      // Calculate the total number of seats needed based on the number of tables needed
+      const seatsNeeded = tablesNeeded * 6;
+    
+      if (seatsNeeded > remainingSeats) {
         console.log(
           `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
         );
         return;
       }
-  
+    
       const newBooking: IBooking = {
-        numberOfPeople,
+        table: [],
+        numberOfPeople: seatsNeeded,
+        actualNumberOfGuests: numberOfPeople, // Use the original number of guests as the actual number
         sitting,
-        date: new Date(bookingDate),
+        date: bookingDate,
         firstName: booking.firstName,
         lastName: booking.lastName,
         email: booking.email,
         phoneNumber: booking.phoneNumber,
         _id: "",
-      };    
-  
+      };
+    
       existingBookings.push(newBooking);
       console.log(existingBookings);
-  
+    
       await createNewBooking(newBooking);
     } catch (error) {
       console.log("Error checking availability:", error);
     }
-  };   
+  };
+  
+   
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
     const { firstName, lastName, email, phoneNumber } = data;

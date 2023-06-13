@@ -28,6 +28,7 @@ export async function getBookingsByDate(date: string, sitting: number) {
 
 export async function createNewBooking({
   numberOfPeople,
+  actualNumberOfGuests, // Add the new field
   sitting,
   firstName,
   lastName,
@@ -40,6 +41,7 @@ export async function createNewBooking({
     {
       table: [],
       numberOfPeople: numberOfPeople,
+      actualNumberOfGuests: actualNumberOfGuests, // Include the new field
       sitting: sitting,
       firstName: firstName,
       lastName: lastName,

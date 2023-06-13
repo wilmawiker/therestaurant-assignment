@@ -1,7 +1,9 @@
 export interface IBooking {
+  table: [];
   numberOfPeople: number;
+  actualNumberOfGuests: number; // Add a new property to store the actual number of guests
   sitting: number;
-  date: Date; // Remove the null option
+  date: Date;
   firstName: string;
   lastName: string;
   email: string;
@@ -10,10 +12,12 @@ export interface IBooking {
 }
 
 export const defaultBooking: IBooking = {
+  table: [],
   _id: "",
   numberOfPeople: 1,
+  actualNumberOfGuests: 1, // Set the initial value to 1
   sitting: 1,
-  date: new Date(), // Update the initial value to a valid Date
+  date: new Date(),
   firstName: "",
   lastName: "",
   email: "",
