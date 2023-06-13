@@ -4,4 +4,8 @@ interface IBookingResponse {
   data: IBooking[];
 }
 
+export interface IBookingResponseOne {
+  data: IBooking;
+}
+
 export default IBookingResponse;

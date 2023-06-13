@@ -9,20 +9,23 @@ export default createGlobalStyle`
 }
 
 body {
-    background: #fff;
-    color: hsl(192, 100%, 9%);
+    background: #000000;
+    color: hsl(0, 0%, 100%);
     font-family: sans-serif; 
-    font-size: 1.15em; 
+    font-size: 1.35em;
     margin: 0;
     max-width: 100vw;
 }
 
 p {
-    opacity: 0.6;
+    opacity: 1;
     line-height: 1.5;
 }
 
 img {
     max-width: 100% 
 }
+
+/* React calendar */
+
 `;

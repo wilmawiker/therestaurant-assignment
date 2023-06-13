@@ -24,7 +24,7 @@ const LandingPage = () => {
   return (
     <>
       <GeneralWrapper flexdirection="column">
-        <StyledH1 fontSize="4rem">WAIO</StyledH1>
+        <StyledH1 fontSize="8rem">WAIO</StyledH1>
         <Link to="/book">
           <Button bgcolor="red" color="white" fontSize="1.3rem">
             Boka Bord

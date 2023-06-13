@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { createNewBooking, getAllBookings } from "../services/bookingServices";
+import { ErrorMessage } from "@hookform/error-message";
+import { createNewBooking } from "../services/bookingServices";
 import { ChangeEvent, useContext, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
 import {
@@ -7,13 +8,14 @@ import {
   BookingDispatchContext,
 } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
-import { StyledP } from "./styled/StyledP";
+import axios from "axios";
+import { IBooking } from "../models/IBooking";
 
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
 }
 
 interface ICustormerFormProps {
@@ -27,7 +29,9 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<ICustomerFormInput>();
+  } = useForm<ICustomerFormInput>({
+    criteriaMode: "all",
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -45,7 +49,10 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
         break;
 
       case "phoneNumber":
-        dispatch({ type: ActionType.PHONENUMBER, payload: e.target.value });
+        dispatch({
+          type: ActionType.PHONENUMBER,
+          payload: e.target.value,
+        });
         break;
 
       default:
@@ -54,92 +61,297 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
   };
 
   const [disabled, setDisabled] = useState(true);
+  const [occupiedTables, setOccupiedTables] = useState<number[]>([]);
 
   const isDisabled = () => {
     setDisabled(!disabled);
   };
 
-  const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
-    console.log(booking);
-    createNewBooking(booking);
+  const checkIfBookingPossible = async () => {
+    const { sitting, date, numberOfPeople } = booking;
+
+    try {
+      const bookingDate = new Date(date);
+
+      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate
+        .toISOString()
+        .slice(0, 10)}?sitting=${sitting}`;
+      let existingBookings: IBooking[] = [];
+
+      try {
+        const response = await axios.get<any>(url);
+        existingBookings = response.data.data;
+
+        const newOccupiedTables: number[] = [];
+
+        for (const booking of existingBookings) {
+          if (Array.isArray(booking.table)) {
+            newOccupiedTables.push(...booking.table);
+          } else {
+            newOccupiedTables.push(booking.table);
+          }
+        }
+
+        setOccupiedTables(newOccupiedTables);
+        console.log(newOccupiedTables);
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          console.log(
+            "No existing bookings found for the selected sitting and date."
+          );
+        } else {
+          throw error;
+        }
+      }
+
+      const tablesPerSitting = 15;
+      const tableSize = 6;
+      const tablesNeeded = Math.ceil(numberOfPeople / tableSize);
+
+      if (occupiedTables.length + tablesNeeded > tablesPerSitting) {
+        console.log("No available tables for the selected sitting and date.");
+        return;
+      }
+
+      let availableTables: number[] = [];
+      let remainingTablesNeeded = tablesNeeded;
+      let currentTableNumber = 1;
+
+      while (
+        remainingTablesNeeded > 0 &&
+        currentTableNumber <= tablesPerSitting
+      ) {
+        if (
+          occupiedTables.includes(currentTableNumber) ||
+          currentTableNumber + tablesNeeded - 1 > tablesPerSitting
+        ) {
+          currentTableNumber++;
+          continue;
+        }
+
+        let isAvailable = true;
+        for (
+          let i = currentTableNumber;
+          i < currentTableNumber + tablesNeeded;
+          i++
+        ) {
+          if (occupiedTables.includes(i)) {
+            isAvailable = false;
+            break;
+          }
+        }
+
+        if (isAvailable) {
+          availableTables = Array.from(
+            { length: tablesNeeded },
+            (_, index) => currentTableNumber + index
+          );
+          break;
+        }
+
+        currentTableNumber++;
+      }
+
+      if (availableTables.length === 0) {
+        console.log("No available tables for the selected sitting and date.");
+        return;
+      }
+
+      const newBooking: IBooking = {
+        table: availableTables,
+        numberOfPeople: booking.numberOfPeople,
+        sitting: booking.sitting,
+        date: new Date(booking.date.toString()),
+        firstName: booking.firstName,
+        lastName: booking.lastName,
+        email: booking.email,
+        phoneNumber: booking.phoneNumber,
+        _id: "",
+      };
+
+      existingBookings.push(newBooking);
+
+      const newOccupiedTables: number[] = [];
+      for (const booking of existingBookings) {
+        if (Array.isArray(booking.table)) {
+          newOccupiedTables.push(...booking.table);
+        } else {
+          newOccupiedTables.push(booking.table);
+        }
+      }
+      setOccupiedTables(newOccupiedTables);
+      console.log(newOccupiedTables);
+
+      await createNewBooking(newBooking);
+    } catch (error) {
+      console.log("Error checking availability:", error);
+    }
   };
+
+  const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
+    const { firstName, lastName, email, phoneNumber } = data;
+
+    dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
+    dispatch({ type: ActionType.LASTNAME, payload: lastName });
+    dispatch({ type: ActionType.EMAIL, payload: email });
+    dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
+
+    await checkIfBookingPossible();
+  };
+
   return (
     <div>
       {showForm ? (
         <Wrapper>
           <div>
             <p>
-              <b>
-                <StyledP>Datum:</StyledP>
-              </b>{" "}
-              <StyledP>
-                {new Date(booking.date.toString()).toLocaleDateString()}
-              </StyledP>
+              <b>Datum:</b>{" "}
+              {new Date(booking.date.toString()).toLocaleDateString()}
             </p>
             <p>
-              <b>
-                <StyledP>Gäster:</StyledP>
-              </b>{" "}
-              <StyledP>{booking.numberOfPeople.toString()}</StyledP>
+              <b>Gäster:</b> {booking.numberOfPeople.toString()}
             </p>
             <p>
-              <b>
-                <StyledP>Tid:</StyledP>
-              </b>
-              <StyledP>
-                {" "}
-                {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
-              </StyledP>
+              <b>Tid:</b>{" "}
+              {booking.sitting.toString() === "1" ? "18-20:30" : "21-23.30"}
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"
               placeholder="Förnamn"
-              {...register("firstName", { required: true, maxLength: 80 })}
+              {...register("firstName", {
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                maxLength: {
+                  value: 80,
+                  message: "Texten överskrider maxgränsen.",
+                },
+                minLength: {
+                  value: 2,
+                  message: "Du måste ange minst 2 tecken.",
+                },
+              })}
               name="firstName"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="firstName"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <input
               type="text"
               placeholder="Efternamn"
-              {...register("lastName", { required: true, maxLength: 100 })}
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                maxLength: {
+                  value: 100,
+                  message: "Texten överskrider maxgränsen.",
+                },
+                minLength: {
+                  value: 2,
+                  message: "Du måste ange minst 2 tecken.",
+                },
+              })}
               name="lastName"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="lastName"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
             />
             <input
               type="email"
               placeholder="Mailadress"
               {...register("email", {
-                required: "Required",
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "invalid email address",
+                  message: "Du måste ange en korrekt mailadress.",
                 },
               })}
               name="email"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <input
               type="tel"
               placeholder="Telefonnummer"
               {...register("phoneNumber", {
-                required: true,
-                minLength: 6,
-                maxLength: 12,
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Måste ange ett korrekt telefonnummer.",
+                },
+                minLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
               })}
               name="phoneNumber"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="phoneNumber"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <br />
             <label htmlFor="gdprCheck">
-              <StyledP>
-                Jag godkänner hanteringen av mina personuppgifter.
-              </StyledP>
+              Jag godkänner hanteringen av mina personuppgifter.
             </label>
             <input type="checkbox" onChange={isDisabled} id="gdprCheck" />
             <input type="submit" disabled={disabled} />
