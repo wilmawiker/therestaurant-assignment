@@ -13,7 +13,6 @@ import BookingReducer from "../reducers/BookingReducer";
 
 const BookingPage = () => {
   const [booking, dispatch] = useReducer(BookingReducer, defaultBooking);
-  // const [booking, setBooking] = useState<IBooking>(defaultBooking);
   const [showDateForm, setDateForm] = useState(true);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   return (
