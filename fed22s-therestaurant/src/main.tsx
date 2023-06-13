@@ -7,6 +7,7 @@ import ContactPage from "./views/ContactPage";
 import Layout from "./components/Layout";
 import AdminPage from "./views/AdminPage";
 import GdprPage from "./views/GdprPage";
+import AdminMoreDetails from "./views/AdminMoreDetailsPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage></AdminPage>,
+      },
+      {
+        path: "/admin/:id",
+        element: <AdminMoreDetails></AdminMoreDetails>,
       },
       {
         path: "/book",
