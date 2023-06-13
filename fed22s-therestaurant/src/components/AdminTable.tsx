@@ -63,7 +63,6 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
               <td>{booking.table?.toString()}</td>
               <td>{booking.sitting.toString()}</td>
               <td>
-                {/* <Link key={booking._id} to={booking._id.toString()}> */}
                 <Button
                   bgcolor="black"
                   color="white"
@@ -72,7 +71,6 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                 >
                   Ändra
                 </Button>
-                {/* </Link> */}
               </td>
               <td>
                 <Button

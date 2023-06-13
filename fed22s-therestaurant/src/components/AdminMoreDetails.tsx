@@ -2,15 +2,13 @@ import { Wrapper } from "../components/styled/Wrappers";
 import {
   deleteBookingById,
   updateBookingById,
-  getBookingById,
 } from "../services/bookingServices";
 import { Button } from "../components/styled/Buttons";
 import { IBooking } from "../models/IBooking";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface FilterBookingsProps {
   booking: IBooking;
-  //   set: (bookings: IBooking[]) => void;
 }
 
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
