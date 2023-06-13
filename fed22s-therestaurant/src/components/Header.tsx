@@ -9,7 +9,9 @@ import { StyledH1 } from "./styled/StyledH1";
 export const Header = () => {
   return (
     <StyledHeader>
-      <StyledH1 fontSize="1.5rem">WAIO</StyledH1>
+      <Link to="/">
+        <StyledH1 fontSize="1.5rem">WAIO</StyledH1>
+      </Link>
       <Ul>
         <Li>
           <Link to="/">Hem</Link>

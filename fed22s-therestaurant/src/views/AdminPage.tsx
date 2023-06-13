@@ -4,7 +4,6 @@ import { getAllBookings } from "../services/bookingServices";
 import setBookingsLs from "../utils/setLS";
 import FilterBookings from "../components/FilterBookings";
 import { AdminTable } from "../components/AdminTable";
-import { BackgroundImage } from "../components/styled/BackgroundImage";
 import { StyledH1 } from "../components/styled/StyledH1";
 
 const AdminPage = () => {

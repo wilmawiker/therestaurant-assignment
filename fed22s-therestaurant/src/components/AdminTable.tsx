@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
 import { Wrapper } from "./styled/Wrappers";
 import { Button } from "./styled/Buttons";
+import { Link, useNavigate } from "react-router-dom";
 
 interface FilterBookingsProps {
   bookings: IBooking[];
@@ -10,6 +11,8 @@ interface FilterBookingsProps {
 }
 
 export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getData = async () => {
       getAllBookings().then((bookings) => {
@@ -28,11 +31,11 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
 
   console.log(todaysBookings);
 
-  const handleClick = () => {};
-
-  function removeBooking(id: string) {
+  async function RemoveBooking(id: string) {
     console.log(id);
-    deleteBookingById(id);
+    const response = await deleteBookingById(id);
+
+    set(bookings.filter((booking) => booking._id !== id));
   }
 
   return (
@@ -52,7 +55,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr key={booking._id.toString()}>
+            <tr>
               <td>{new Date(booking.date).toLocaleDateString()}</td>
               <td>{booking.firstName}</td>
               <td>{booking.lastName}</td>
@@ -64,7 +67,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                   bgcolor="black"
                   color="white"
                   fontSize="0.7rem"
-                  onClick={handleClick}
+                  onClick={() => navigate("/admin/" + booking._id)}
                 >
                   Ändra
                 </Button>
@@ -75,7 +78,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                   color="white"
                   fontSize="0.7rem"
                   type="button"
-                  onClick={() => removeBooking(booking._id)}
+                  onClick={() => RemoveBooking(booking._id)}
                 >
                   Ta Bort
                 </Button>

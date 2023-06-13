@@ -8,6 +8,7 @@ import {
 } from "../components/styled/Wrappers";
 import { Hr } from "../components/styled/Hr";
 import { StyledP } from "../components/styled/StyledP";
+import { Button } from "../components/styled/Buttons";
 
 const ContactPage = () => {
   return (
@@ -21,7 +22,7 @@ const ContactPage = () => {
             bokningstjänst.
           </StyledP>
           <Link to="/book">
-            <button>Boka Bord</button>
+            <Button>Boka Bord</Button>
           </Link>
           <Hr></Hr>
           <ContactWrapper>

@@ -1,4 +1,6 @@
 export interface IBooking {
+  _id: string;
+  table: number[];
   numberOfPeople: number;
   sitting: number;
   date: Date; // Remove the null option
@@ -6,11 +8,11 @@ export interface IBooking {
   lastName: string;
   email: string;
   phoneNumber: string;
-  _id: string;
 }
 
 export const defaultBooking: IBooking = {
   _id: "",
+  table: [],
   numberOfPeople: 1,
   sitting: 1,
   date: new Date(), // Update the initial value to a valid Date
