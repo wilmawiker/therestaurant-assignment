@@ -88,7 +88,7 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               </b>
               <StyledP>
                 {" "}
-                {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
+                {booking.sitting.toString() === "1" ? "18-20:30" : "21-23.30"}
               </StyledP>
             </p>
           </div>
