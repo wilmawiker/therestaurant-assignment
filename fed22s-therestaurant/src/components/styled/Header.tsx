@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledHeader = styled.header`
-  background-color: #000000B2;
+  background-color: #000000b2;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

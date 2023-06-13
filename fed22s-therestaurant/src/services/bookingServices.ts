@@ -1,6 +1,8 @@
 import axios from "axios";
 import { IBooking } from "../models/IBooking";
-import IBookingResponse from "../utils/IBookingResponse";
+import IBookingResponse, {
+  IBookingResponseOne,
+} from "../utils/IBookingResponse";
 
 export async function getAllBookings(): Promise<IBooking[]> {
   let response = await axios.get<IBookingResponse>(
@@ -10,12 +12,12 @@ export async function getAllBookings(): Promise<IBooking[]> {
   return response.data.data;
 }
 
-export async function getBookingById() {
-  let response = await axios.get<IBooking>(
-    "http://localhost:4000/api/v1/bookings/:bookingId"
+export async function getBookingById(id: string) {
+  let response = await axios.get<IBookingResponseOne>(
+    `http://localhost:4000/api/v1/bookings/${id}`
   );
-  console.log(response.data);
-  return response.data;
+  console.log(response.data.data);
+  return response.data.data;
 }
 
 export async function getBookingsByDate(date: string, sitting: number) {
@@ -62,9 +64,9 @@ export async function deleteBookingById(id: string) {
   return response.data;
 }
 
-export async function updateBookingById() {
+export async function updateBookingById(id: string) {
   let response = await axios.put<IBooking>(
-    "http://localhost:4000/api/v1/bookings/:bookingId",
+    `http://localhost:4000/api/v1/bookings/${id}`,
     {
       sitting: 1,
     }
