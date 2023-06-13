@@ -287,27 +287,67 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
               type="email"
               placeholder="Mailadress"
               {...register("email", {
-                required: "Required",
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "invalid email address",
+                  message: "Du måste ange en korrekt mailadress.",
                 },
               })}
               name="email"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
             />
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
+            />
             <input
               type="tel"
               placeholder="Telefonnummer"
               {...register("phoneNumber", {
-                required: true,
-                minLength: 6,
-                maxLength: 12,
+                required: {
+                  value: true,
+                  message: "Detta fält är obligatoriskt",
+                },
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Måste ange ett korrekt telefonnummer.",
+                },
+                minLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "Måste vara 10 tecken.",
+                },
               })}
               name="phoneNumber"
               onChange={handleChange}
               style={{ fontFamily: "Poppins" }}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="phoneNumber"
+              render={({ messages }) => {
+                console.log("messages", messages);
+                return messages
+                  ? Object.entries(messages).map(([type, message]) => (
+                      <p key={type}>{message}</p>
+                    ))
+                  : null;
+              }}
             />
             <br />
             <label htmlFor="gdprCheck">
