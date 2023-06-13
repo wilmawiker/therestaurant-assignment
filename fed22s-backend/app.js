@@ -3,14 +3,19 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bookingRoutes = require("./routes/bookingRoutes");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 app.use(express.json());
-
+app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ["http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:5174"],
+    origin: [
+      "http://127.0.0.1:5173",
+      "http://localhost:5173",
+      "http://127.0.0.1:5174",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
@@ -21,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/send");
 
 const port = process.env.PORT || 5000;
 async function run() {
