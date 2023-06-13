@@ -64,17 +64,95 @@ const CustomerForm = ({
     }
   };
 
-  const [disabled, setDisabled] = useState(true);
+  const checkIfBookingPossible = async () => {
+    const { sitting, date, numberOfPeople } = booking;
+    
+    try {
+      let bookingDate = new Date(date);
+    
+      bookingDate.setDate(bookingDate.getDate() + 1);
+    
+      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate.toISOString().slice(0, 10)}?sitting=${sitting}`;
+    
+      let existingBookings: IBooking[] = [];
+    
+      try {
+        const response = await axios.get<any>(url);
+        existingBookings = response.data.data;
+        console.log("Filtered Bookings:", existingBookings);
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          console.log("No existing bookings found for the selected date.");
+        } else {
+          throw error;
+        }
+      }
+    
+      // Calculate the total number of people already booked for the selected sitting and date
+      const totalPeopleForSittingAndDate = existingBookings.reduce(
+        (total, booking) => total + booking.numberOfPeople,
+        0
+      );
+      
+      console.log(totalPeopleForSittingAndDate);
+  
+      // Calculate the remaining available seats in the sitting
+      const remainingSeats = 90 - totalPeopleForSittingAndDate;
+  
+      // Calculate the number of tables needed based on the number of guests and the table capacity
+      const tablesNeeded = Math.ceil(numberOfPeople / 6);
+  
+      // Calculate the total number of seats needed based on the number of tables needed
+      const seatsNeeded = tablesNeeded * 6;
+    
+      if (seatsNeeded > remainingSeats) {
+        console.log(
+          `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
+        );
+        return;
+      }
+    
+      const newBooking: IBooking = {
+        table: [],
+        numberOfPeople: seatsNeeded,
+        actualNumberOfGuests: numberOfPeople, // Use the original number of guests as the actual number
+        sitting,
+        date: bookingDate,
+        firstName: booking.firstName,
+        lastName: booking.lastName,
+        email: booking.email,
+        phoneNumber: booking.phoneNumber,
+        _id: "",
+      };
+    
+      existingBookings.push(newBooking);
+      console.log(existingBookings);
+    
+      await createNewBooking(newBooking);
+    } catch (error) {
+      console.log("Error checking availability:", error);
+    }
+  };   
 
-  const isDisabled = () => {
-    setDisabled(!disabled);
+  const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
+    const { firstName, lastName, email, phoneNumber } = data;
+  
+    dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
+    dispatch({ type: ActionType.LASTNAME, payload: lastName });
+    dispatch({ type: ActionType.EMAIL, payload: email });
+    dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
+  
+    await checkIfBookingPossible();
+    await createEmail(
+      email,
+      firstName,
+      new Date(booking.date).toLocaleDateString(),
+      booking._id
+    );
+    showCustomerForm(false);
+    showConfirmation(true);
   };
 
-  const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
-    console.log(booking);
-
-    createNewBooking(booking);
-  };
   return (
     <div>
       {showForm ? (
@@ -85,7 +163,6 @@ const CustomerForm = ({
               {new Date(booking.date.toString()).toLocaleDateString()}
             </p>
             <p>
-              <b>Gäster:</b> {booking.numberOfPeople.toString()}
               <b>Gäster:</b> {booking.numberOfPeople.toString()}
             </p>
             <p>
