@@ -8,6 +8,7 @@ import {
 } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
 import { StyledP } from "./styled/StyledP";
+
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
@@ -60,7 +61,6 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
     console.log(booking);
-
     createNewBooking(booking);
   };
   return (

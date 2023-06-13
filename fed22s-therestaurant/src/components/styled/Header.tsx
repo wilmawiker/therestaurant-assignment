@@ -7,5 +7,5 @@ export const StyledHeader = styled.header`
   justify-content: space-between;
   padding: 10px;
   height: 10vh;
-  width: 98.5vw;
+  width: 100vw;
 `;
