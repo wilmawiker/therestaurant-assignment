@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
 import { Wrapper } from "./styled/Wrappers";
