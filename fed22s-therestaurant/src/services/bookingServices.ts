@@ -26,31 +26,19 @@ export async function getBookingsByDate(date: string, sitting: number) {
   return bookings;
 }
 
-export async function createNewBooking({
-  numberOfPeople,
-  sitting,
-  firstName,
-  lastName,
-  email,
-  phoneNumber,
-  date,
-}: IBooking) {
-  let response = await axios.post<IBooking>(
-    "http://localhost:4000/api/v1/bookings",
-    {
-      table: [],
-      numberOfPeople: numberOfPeople,
-      sitting: sitting,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      date: date,
-    }
-  );
-  console.log(response.data);
-  console.log("Booking added");
-  return response.data;
+export async function createNewBooking(booking: IBooking) {
+  try {
+    const response = await axios.post<IBooking>(
+      "http://localhost:4000/api/v1/bookings",
+      booking
+    );
+    console.log(response.data);
+    console.log("Booking added");
+    return response.data;
+  } catch (error) {
+    console.log("Error creating new booking:", error);
+    throw error;
+  }
 }
 
 export async function deleteBookingById(id: string) {
