@@ -34,20 +34,20 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
     const name = e.target.name;
     switch (name) {
       case "firstName":
-        dispatch({ type: ActionType.SET_FIRST_NAME, payload: e.target.value });
+        dispatch({ type: ActionType.FIRSTNAME, payload: e.target.value });
         break;
 
       case "lastName":
-        dispatch({ type: ActionType.SET_LAST_NAME, payload: e.target.value });
+        dispatch({ type: ActionType.LASTNAME, payload: e.target.value });
         break;
 
       case "email":
-        dispatch({ type: ActionType.SET_EMAIL, payload: e.target.value });
+        dispatch({ type: ActionType.EMAIL, payload: e.target.value });
         break;
 
       case "phoneNumber":
         dispatch({
-          type: ActionType.SET_PHONE_NUMBER,
+          type: ActionType.PHONENUMBER,
           payload: e.target.value,
         });
         break;
