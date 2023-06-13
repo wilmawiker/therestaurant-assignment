@@ -10,11 +10,14 @@ import {
   BookingDispatchContext,
 } from "../contexts/BookingContext";
 import BookingReducer from "../reducers/BookingReducer";
+import BookingConfirmation from "../components/BookingConfirmation";
 
 const BookingPage = () => {
   const [booking, dispatch] = useReducer(BookingReducer, defaultBooking);
   const [showDateForm, setDateForm] = useState(true);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [showBookingConfirmation, setShowBookingConfirmation] = useState(false);
+
   return (
     <BookingContext.Provider value={booking}>
       <BookingDispatchContext.Provider value={dispatch}>
@@ -24,7 +27,14 @@ const BookingPage = () => {
             showDateForm={setDateForm}
             showCustomerForm={setShowCustomerForm}
           ></DateForm>
-          <CustomerForm showForm={showCustomerForm}></CustomerForm>
+          <CustomerForm
+            showForm={showCustomerForm}
+            showCustomerForm={setShowCustomerForm}
+            showConfirmation={setShowBookingConfirmation}
+          ></CustomerForm>
+          <BookingConfirmation
+            show={showBookingConfirmation}
+          ></BookingConfirmation>
           <Link to="/gdpr">
             <GDPRButton bgcolor="gray" color="white" fontSize="0.8rem">
               Personuppgiftspolicy
@@ -37,3 +47,6 @@ const BookingPage = () => {
 };
 
 export default BookingPage;
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}

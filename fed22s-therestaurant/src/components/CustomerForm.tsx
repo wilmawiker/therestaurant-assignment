@@ -10,6 +10,8 @@ import {
 import { ActionType } from "../reducers/BookingReducer";
 import axios from "axios";
 import { IBooking } from "../models/IBooking";
+import BookingConfirmation from "./BookingConfirmation";
+import { createEmail } from "../services/mailServices";
 
 interface ICustomerFormInput {
   firstName: string;
@@ -20,9 +22,15 @@ interface ICustomerFormInput {
 
 interface ICustormerFormProps {
   showForm: boolean;
+  showCustomerForm: (showCustomer: boolean) => void;
+  showConfirmation: (show: boolean) => void;
 }
 
-const CustomerForm = ({ showForm }: ICustormerFormProps) => {
+const CustomerForm = ({
+  showForm,
+  showCustomerForm,
+  showConfirmation,
+}: ICustormerFormProps) => {
   const dispatch = useContext(BookingDispatchContext);
   const booking = useContext(BookingContext);
   const {
@@ -197,6 +205,14 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
     dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
 
     await checkIfBookingPossible();
+    await createEmail(
+      email,
+      firstName,
+      new Date(booking.date).toLocaleDateString(),
+      booking._id
+    );
+    showCustomerForm(false);
+    showConfirmation(true);
   };
 
   return (
