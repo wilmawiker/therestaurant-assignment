@@ -27,7 +27,7 @@ const DateForm = ({
   );
   const [showTime, setShowTime] = useState(false);
 
-  const handlePeopleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handlePeopleChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: e.target.value });
   };
 
@@ -51,19 +51,17 @@ const DateForm = ({
               <label htmlFor="guests">
                 <StyledP>Antal gäster:</StyledP>
               </label>
-              <select
+
+              <input 
+                type="number"
                 name="numberOfPeople"
                 id="guests"
                 onChange={handlePeopleChange}
                 style={{ fontFamily: "Poppins" }}
+                min="1"
+                max="90"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </select>
+              </input>
               <Calendar
                 onChange={handleDateChange}
                 value={date}

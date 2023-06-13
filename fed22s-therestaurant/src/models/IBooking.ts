@@ -1,21 +1,19 @@
 export interface IBooking {
-  _id: string;
-  table: number;
   numberOfPeople: number;
   sitting: number;
-  date: Date;
+  date: Date; // Remove the null option
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
+  _id: string;
 }
 
 export const defaultBooking: IBooking = {
   _id: "",
-  table: 0,
   numberOfPeople: 1,
   sitting: 1,
-  date: new Date(),
+  date: new Date(), // Update the initial value to a valid Date
   firstName: "",
   lastName: "",
   email: "",

@@ -1,18 +1,20 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { createNewBooking, getAllBookings } from "../services/bookingServices";
-import { ChangeEvent, useContext, useState } from "react";
+import { createNewBooking } from "../services/bookingServices";
+import { ChangeEvent, useContext } from "react";
 import { Wrapper } from "./styled/Wrappers";
 import {
   BookingContext,
   BookingDispatchContext,
 } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
-import { StyledP } from "./styled/StyledP";
+import axios from "axios";
+import { IBooking } from "../models/IBooking";
+
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
 }
 
 interface ICustormerFormProps {
@@ -44,7 +46,10 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
         break;
 
       case "phoneNumber":
-        dispatch({ type: ActionType.PHONENUMBER, payload: e.target.value });
+        dispatch({
+          type: ActionType.PHONENUMBER,
+          payload: e.target.value,
+        });
         break;
 
       default:
@@ -52,44 +57,101 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
     }
   };
 
-  const [disabled, setDisabled] = useState(true);
+  const checkIfBookingPossible = async () => {
+    const { sitting, date, numberOfPeople } = booking;
+  
+    try {
+      let bookingDate = new Date(booking.date.toString().slice(0, 10));
+      bookingDate.setDate(bookingDate.getDate() + 1);
 
-  const isDisabled = () => {
-    setDisabled(!disabled);
+
+      console.log(bookingDate);
+  
+      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate}?sitting=${sitting}`;
+  
+      let existingBookings: IBooking[] = [];
+  
+      try {
+        const response = await axios.get<any>(url);
+        existingBookings = response.data.data;
+        console.log(existingBookings);
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          console.log(
+            "No existing bookings found for the selected date."
+          );
+        } else {
+          throw error;
+        }
+      }
+  
+      // Filter existing bookings by the selected sitting
+      const bookingsForSitting = existingBookings.filter(
+        (booking) => booking.sitting === sitting
+      );
+  
+      // Calculate the total number of people in existing bookings for the selected sitting
+      const totalPeopleInSitting = bookingsForSitting.reduce(
+        (total, booking) => total + booking.numberOfPeople,
+        0
+      );
+  
+      // Calculate the remaining available seats in the sitting
+      const remainingSeats = 90 - totalPeopleInSitting;
+  
+      if (numberOfPeople > remainingSeats) {
+        console.log(
+          `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
+        );
+        return;
+      }
+  
+      const newBooking: IBooking = {
+        numberOfPeople,
+        sitting,
+        date: new Date(bookingDate),
+        firstName: booking.firstName,
+        lastName: booking.lastName,
+        email: booking.email,
+        phoneNumber: booking.phoneNumber,
+        _id: "",
+      };    
+  
+      existingBookings.push(newBooking);
+      console.log(existingBookings);
+  
+      await createNewBooking(newBooking);
+    } catch (error) {
+      console.log("Error checking availability:", error);
+    }
+  };   
+
+  const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
+    const { firstName, lastName, email, phoneNumber } = data;
+  
+    dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
+    dispatch({ type: ActionType.LASTNAME, payload: lastName });
+    dispatch({ type: ActionType.EMAIL, payload: email });
+    dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
+  
+    await checkIfBookingPossible();
   };
 
-  const onSubmit: SubmitHandler<ICustomerFormInput> = () => {
-    console.log(booking);
-
-    createNewBooking(booking);
-  };
   return (
     <div>
       {showForm ? (
         <Wrapper>
           <div>
             <p>
-              <b>
-                <StyledP>Datum:</StyledP>
-              </b>{" "}
-              <StyledP>
-                {new Date(booking.date.toString()).toLocaleDateString()}
-              </StyledP>
+              <b>Datum:</b>{" "}
+              {new Date(booking.date.toString()).toLocaleDateString()}
             </p>
             <p>
-              <b>
-                <StyledP>Gäster:</StyledP>
-              </b>{" "}
-              <StyledP>{booking.numberOfPeople.toString()}</StyledP>
+              <b>Gäster:</b> {booking.numberOfPeople.toString()}
             </p>
             <p>
-              <b>
-                <StyledP>Tid:</StyledP>
-              </b>
-              <StyledP>
-                {" "}
-                {booking.sitting == 1 ? "18-20:30" : "21-23.30"}
-              </StyledP>
+              <b>Tid:</b>{" "}
+              {booking.sitting.toString() === "1" ? "18-20:30" : "21-23.30"}
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -137,12 +199,10 @@ const CustomerForm = ({ showForm }: ICustormerFormProps) => {
             />
             <br />
             <label htmlFor="gdprCheck">
-              <StyledP>
-                Jag godkänner hanteringen av mina personuppgifter.
-              </StyledP>
+              Jag godkänner hanteringen av mina personuppgifter.
             </label>
-            <input type="checkbox" onChange={isDisabled} id="gdprCheck" />
-            <input type="submit" disabled={disabled} />
+            <input type="checkbox" id="gdprCheck" />
+            <input type="submit" />
           </form>
         </Wrapper>
       ) : null}
