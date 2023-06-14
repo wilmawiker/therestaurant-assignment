@@ -1,21 +1,27 @@
 import { IBooking } from "../models/IBooking";
-
-export interface IAction {
-  type: ActionType;
-  payload: string;
-}
+import { getAllBookings } from "../services/bookingServices";
 
 export enum ActionType {
   BOOKINGS,
   FILTEREDBOOKINGS,
 }
 
+export interface IAction {
+  type: ActionType;
+  payload: any;
+}
 const AdminReducer = (bookings: IBooking[], action: IAction): IBooking[] => {
   switch (action.type) {
     case ActionType.BOOKINGS: {
+      getAllBookings().then((bookings) => {
+        return [bookings];
+      });
+    }
+
+    default: {
+      return bookings;
     }
   }
-  return bookings;
 };
 
 export default AdminReducer;
