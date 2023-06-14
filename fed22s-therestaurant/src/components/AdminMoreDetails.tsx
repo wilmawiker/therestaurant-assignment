@@ -1,4 +1,4 @@
-import { Wrapper } from "../components/styled/Wrappers";
+import { TableWrapper, Wrapper } from "../components/styled/Wrappers";
 import {
   deleteBookingById,
   updateBookingById,
@@ -6,6 +6,7 @@ import {
 import { Button } from "../components/styled/Buttons";
 import { IBooking } from "../models/IBooking";
 import { Link } from "react-router-dom";
+import { Table, TableData, TableHeader, TableRow } from "./styled/Table";
 
 interface FilterBookingsProps {
   booking: IBooking;
@@ -23,30 +24,30 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
   return (
     <Wrapper>
       <Link to="/admin">
-        <button>Tillbaka</button>
+        <Button bgcolor="black" color="white" fontSize="0.7rem">
+          Tillbaka
+        </Button>
       </Link>
-      <table>
+      <Table>
         <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Förnamn</th>
-            <th>Efternamn</th>
-            <th>Antal Personer</th>
-            <th>Bordsnummer</th>
-            <th>Tid</th>
-            <th>Ändra</th>
-            <th>Ta bort</th>
-          </tr>
+          <TableRow>
+            <TableHeader>Datum</TableHeader>
+            <TableHeader>Förnamn</TableHeader>
+            <TableHeader>Efternamn</TableHeader>
+            <TableHeader>Gäster</TableHeader>
+            <TableHeader>Sittning</TableHeader>
+          </TableRow>
         </thead>
         <tbody>
-          <tr>
-            <td>{new Date(booking?.date).toLocaleDateString()}</td>
-            <td>{booking?.firstName}</td>
-            <td>{booking?.lastName}</td>
-            <td>{booking?.numberOfPeople.toString()}</td>
-            <td>{booking?.table?.toString()}</td>
-            <td>{booking?.sitting.toString()}</td>
-            <td>
+          <TableRow>
+            <TableData>
+              {new Date(booking?.date).toLocaleDateString()}
+            </TableData>
+            <TableData>{booking?.firstName}</TableData>
+            <TableData>{booking?.lastName}</TableData>
+            <TableData>{booking?.numberOfPeople.toString()}</TableData>
+            <TableData>{booking?.sitting.toString()}</TableData>
+            <TableData>
               <Button
                 bgcolor="black"
                 color="white"
@@ -55,8 +56,8 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
               >
                 Spara
               </Button>
-            </td>
-            <td>
+            </TableData>
+            <TableData>
               <Button
                 bgcolor="red"
                 color="white"
@@ -66,10 +67,10 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
               >
                 Ta Bort
               </Button>
-            </td>
-          </tr>
+            </TableData>
+          </TableRow>
         </tbody>
-      </table>
+      </Table>
     </Wrapper>
   );
 };

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
-import { Wrapper } from "./styled/Wrappers";
+import { TableWrapper, Wrapper } from "./styled/Wrappers";
 import { Button } from "./styled/Buttons";
 import { Link, useNavigate } from "react-router-dom";
+import { Table, TableData, TableHeader, TableRow } from "./styled/Table";
 
 interface FilterBookingsProps {
   bookings: IBooking[];
@@ -14,12 +15,12 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getData = async () => {
+    const geTableDataata = async () => {
       getAllBookings().then((bookings) => {
         set(bookings);
       });
     };
-    getData();
+    geTableDataata();
   }, []);
 
   const todaysBookings = bookings.filter((booking) => {
@@ -39,26 +40,28 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
   }
 
   return (
-    <Wrapper>
-      <table>
+    <TableWrapper>
+      <Table>
         <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Förnamn</th>
-            <th>Efternamn</th>
-            <th>Gäster</th>
-            <th>Tid</th>
-          </tr>
+          <TableRow>
+            <TableHeader>Datum</TableHeader>
+            <TableHeader>Förnamn</TableHeader>
+            <TableHeader>Efternamn</TableHeader>
+            <TableHeader>Gäster</TableHeader>
+            <TableHeader>Sittning</TableHeader>
+          </TableRow>
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr>
-              <td>{new Date(booking.date).toLocaleDateString()}</td>
-              <td>{booking.firstName}</td>
-              <td>{booking.lastName}</td>
-              <td>{booking.numberOfPeople.toString()}</td>
-              <td>{booking.sitting.toString()}</td>
-              <td>
+            <TableRow>
+              <TableData>
+                {new Date(booking.date).toLocaleDateString()}
+              </TableData>
+              <TableData>{booking.firstName}</TableData>
+              <TableData>{booking.lastName}</TableData>
+              <TableData>{booking.numberOfPeople.toString()}</TableData>
+              <TableData>{booking.sitting.toString()}</TableData>
+              <TableData>
                 <Button
                   bgcolor="black"
                   color="white"
@@ -67,8 +70,8 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                 >
                   Ändra
                 </Button>
-              </td>
-              <td>
+              </TableData>
+              <TableData>
                 <Button
                   bgcolor="red"
                   color="white"
@@ -78,11 +81,11 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                 >
                   Ta Bort
                 </Button>
-              </td>
-            </tr>
+              </TableData>
+            </TableRow>
           ))}
         </tbody>
-      </table>
-    </Wrapper>
+      </Table>
+    </TableWrapper>
   );
 };
