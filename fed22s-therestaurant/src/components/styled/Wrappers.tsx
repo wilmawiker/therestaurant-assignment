@@ -12,39 +12,39 @@ export const GeneralWrapper = styled.div<IWrapperProps>`
   align-items: center;
   margin: 0;
   padding: 0;
-  top: 47%;  
-  left: 50%; 
+  top: 47%;
+  left: 50%;
   transform: translate(-50%, -50%);
 `;
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 10px;
-  background-color: #000000B2;
+  gap: 20px;
+  background-color: #000000b2;
   opacity: 80%;
   margin: 20px;
   width: 700px;
   border-radius: 15px;
   padding: 10px;
 
-  select{
+  select {
     border: none;
     outline: none;
     opacity: 0.9;
   }
 
-  .react-calendar{
+  .react-calendar {
     background-color: #ffffff;
     border: none;
   }
 
-  #sittings{
+  #sittings {
     display: flex;
     flex-direction: row;
-    div{
+    div {
       display: flex;
       flex-direction: row;
       column-gap: 10px;
@@ -69,4 +69,20 @@ export const InfoWrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+`;
+
+export const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: scroll;
+  gap: 20px;
+  background-color: #000000b2;
+  opacity: 80%;
+  margin: 20px;
+  width: 700px;
+  border-radius: 15px;
+  padding: 10px;
 `;
