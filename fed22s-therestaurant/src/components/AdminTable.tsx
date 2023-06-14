@@ -46,11 +46,8 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
             <th>Datum</th>
             <th>Förnamn</th>
             <th>Efternamn</th>
-            <th>Antal Personer</th>
-            <th>Bordsnummer</th>
+            <th>Gäster</th>
             <th>Tid</th>
-            <th>Ändra</th>
-            <th>Ta bort</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +57,6 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
               <td>{booking.firstName}</td>
               <td>{booking.lastName}</td>
               <td>{booking.numberOfPeople.toString()}</td>
-              <td>{booking.table?.toString()}</td>
               <td>{booking.sitting.toString()}</td>
               <td>
                 <Button
