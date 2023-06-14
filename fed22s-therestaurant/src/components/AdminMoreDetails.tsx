@@ -1,18 +1,25 @@
-import { TableWrapper, Wrapper } from "../components/styled/Wrappers";
+import { Wrapper } from "../components/styled/Wrappers";
 import {
   deleteBookingById,
   updateBookingById,
 } from "../services/bookingServices";
+import { useState } from "react";
 import { Button } from "../components/styled/Buttons";
 import { IBooking } from "../models/IBooking";
 import { Link } from "react-router-dom";
 import { Table, TableData, TableHeader, TableRow } from "./styled/Table";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import { ValuePiece } from "../utils/valuePiece";
 
 interface FilterBookingsProps {
   booking: IBooking;
 }
 
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
+  const [pickedDate, changeDate] = useState<
+    ValuePiece | [ValuePiece, ValuePiece]
+  >(booking.date);
   function SaveBooking(id: string) {
     updateBookingById(id);
   }
@@ -41,12 +48,42 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
         <tbody>
           <TableRow>
             <TableData>
-              {new Date(booking?.date).toLocaleDateString()}
+              <DatePicker
+                onChange={changeDate}
+                value={pickedDate}
+                minDate={new Date()}
+              ></DatePicker>
             </TableData>
-            <TableData>{booking?.firstName}</TableData>
-            <TableData>{booking?.lastName}</TableData>
-            <TableData>{booking?.numberOfPeople.toString()}</TableData>
-            <TableData>{booking?.sitting.toString()}</TableData>
+            <TableData>
+              <input
+                type="text"
+                placeholder={booking?.firstName}
+                className="input__text"
+              />
+            </TableData>
+            <TableData>
+              <input
+                type="text"
+                placeholder={booking?.lastName}
+                className="input__text"
+              />
+            </TableData>
+            <TableData>
+              <input
+                type="number"
+                placeholder={booking?.numberOfPeople.toString()}
+                className="input__number"
+              />
+            </TableData>
+            <TableData>
+              <input
+                type="number"
+                min={1}
+                max={2}
+                placeholder={booking?.sitting.toString()}
+                className="input__number"
+              />
+            </TableData>
             <TableData>
               <Button
                 bgcolor="black"
