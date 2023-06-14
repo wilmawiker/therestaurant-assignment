@@ -10,10 +10,9 @@ exports.createEmail = async (req, res) => {
     const message = `
     <h3>Hej ${firstName}!</h3>
     <p>Tack för din bokning hos oss på <b>WAIO</b> ${date}.</p>
-    <p>För att ändra din bokning tryck här: <button>Ändra bokning</button> <a>${id}</a></p>
+    <p>För att ändra din bokning tryck <a href="http://localhost:5173/admin/${id}">här</a></p>
     <h4>Allt gott, WAIO!</h4>
     `;
-    console.log(send_to);
 
     await sendEmail(send_to, sent_from, subject, message);
     return res.status(200).json({ success: true, message: "Email sent" });
