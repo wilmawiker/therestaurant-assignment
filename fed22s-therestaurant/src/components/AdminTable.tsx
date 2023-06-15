@@ -84,7 +84,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
                 </TableData>
                 <TableData>{booking.firstName}</TableData>
                 <TableData>{booking.lastName}</TableData>
-                <TableData>{booking.numberOfPeople.toString()}</TableData>
+                <TableData>{booking.actualNumberOfGuests.toString()}</TableData>
                 <TableData>{booking.sitting.toString()}</TableData>
                 <TableData>
                   <Button

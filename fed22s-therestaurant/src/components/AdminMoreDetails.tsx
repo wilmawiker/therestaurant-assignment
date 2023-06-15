@@ -12,6 +12,7 @@ import { ChangeEvent, useContext } from "react";
 import { BookingDispatchContext } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
 import "react-date-picker/dist/DatePicker.css";
+import axios from "axios";
 
 interface FilterBookingsProps {
   booking: IBooking;
@@ -23,6 +24,7 @@ interface IUpdateBookingFormInput {
   numberOfPeople: number;
   sitting: number;
   date: string;
+  actualNumberOfGuests: number;
 }
 
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
@@ -31,29 +33,33 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
-    console.log(name);
+    const value = e.target.value;
+  
     switch (name) {
       case "firstName":
-        dispatch({ type: ActionType.FIRSTNAME, payload: e.target.value });
+        dispatch({ type: ActionType.FIRSTNAME, payload: value });
         break;
-
+  
       case "lastName":
-        dispatch({ type: ActionType.LASTNAME, payload: e.target.value });
+        dispatch({ type: ActionType.LASTNAME, payload: value });
         break;
-
+  
       case "numberOfPeople":
-        dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: e.target.value });
+        dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: parseInt(value, 10) });
         break;
-
+  
       case "sitting":
-        dispatch({ type: ActionType.SITTING, payload: e.target.value });
+        dispatch({ type: ActionType.SITTING, payload: parseInt(value, 10) });
         break;
-
+  
+      case "actualNumberOfGuests":
+        dispatch({ type: ActionType.ACTUALNUMBEROFGUESTS, payload: parseInt(value, 10) });
+        break;
+  
       default:
         break;
     }
-    console.log(ActionType.FIRSTNAME);
-  };
+  };  
 
   async function saveBooking(id: string, updatedBooking: IBooking) {
     await updateBookingById(id, updatedBooking);
@@ -64,18 +70,58 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
     deleteBookingById(id);
   }
   const onSubmit: SubmitHandler<IUpdateBookingFormInput> = async (data) => {
-    const { firstName, lastName, numberOfPeople, sitting, date } = data;
-
+    const { firstName, lastName, sitting, date, actualNumberOfGuests } = data;
+  
+    const tablesNeeded = Math.ceil(actualNumberOfGuests / 6);
+    const updatedNumberOfPeople = tablesNeeded * 6;
+  
+    // Check if the updated number of people exceeds the available seats
+    const url = `http://localhost:4000/api/v1/bookings/date/${booking.date}?sitting=${sitting}`;
+    let existingBookings: IBooking[] = [];
+  
+    try {
+      const response = await axios.get<any>(url);
+      existingBookings = response.data.data;
+      console.log("Filtered Bookings:", existingBookings);
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        console.log("No existing bookings found for the selected date.");
+      } else {
+        throw error;
+      }
+    }
+  
+    // Calculate the total number of people already booked for the selected sitting and date
+    const totalPeopleForSittingAndDate = existingBookings.reduce(
+      (total, booking) => total + booking.numberOfPeople,
+      0
+    );
+  
+    // Calculate the remaining available seats in the sitting
+    const remainingSeats = 90 - totalPeopleForSittingAndDate;
+  
+    // Calculate the seats needed for the updated booking
+    const seatsNeeded = tablesNeeded * 6;
+  
+    if (seatsNeeded > remainingSeats) {
+      console.log(
+        `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
+      );
+      // Handle the case where the booking cannot be updated
+      return;
+    }
+  
     dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
     dispatch({ type: ActionType.LASTNAME, payload: lastName });
-    dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: numberOfPeople });
+    dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: updatedNumberOfPeople });
+    dispatch({ type: ActionType.ACTUALNUMBEROFGUESTS, payload: actualNumberOfGuests });
     dispatch({ type: ActionType.SITTING, payload: sitting });
     dispatch({ type: ActionType.DATE, payload: date });
-
+  
     const updatedBooking: IBooking = {
       table: booking.table,
-      numberOfPeople: numberOfPeople || booking.numberOfPeople,
-      actualNumberOfGuests: numberOfPeople || booking.numberOfPeople, // Use the original number of guests as the actual number
+      numberOfPeople: updatedNumberOfPeople || booking.numberOfPeople,
+      actualNumberOfGuests: actualNumberOfGuests || booking.actualNumberOfGuests,
       sitting: sitting || booking.sitting,
       date: booking.date,
       firstName: firstName || booking.firstName,
@@ -84,7 +130,7 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
       phoneNumber: booking.phoneNumber,
       _id: "",
     };
-
+  
     console.log(updatedBooking);
     console.log(booking._id);
     saveBooking(booking._id, updatedBooking);
@@ -134,13 +180,13 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
               <TableData>
                 <input
                   type="number"
-                  defaultValue={booking?.numberOfPeople}
-                  {...register("numberOfPeople")}
-                  name="numberOfPeople"
+                  defaultValue={booking.actualNumberOfGuests}
+                  {...register("actualNumberOfGuests")}
+                  name="actualNumberOfGuests"
                   onChange={handleChange}
                   style={{ fontFamily: "Poppins" }}
                   min={1}
-                  max={12}
+                  max={90}
                   className="input__number"
                 />
               </TableData>

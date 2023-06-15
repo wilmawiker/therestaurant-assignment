@@ -8,7 +8,6 @@ export async function getAllBookings(): Promise<IBooking[]> {
   let response = await axios.get<IBookingResponse>(
     "http://localhost:4000/api/v1/bookings"
   );
-  console.log(response.data.data);
   return response.data.data;
 }
 
@@ -16,7 +15,6 @@ export async function getBookingById(id: string) {
   let response = await axios.get<IBookingResponseOne>(
     `http://localhost:4000/api/v1/bookings/${id}`
   );
-  console.log(response.data.data);
   return response.data.data;
 }
 
@@ -24,7 +22,6 @@ export async function getBookingsByDate(date: string, sitting: number) {
   const url = `http://localhost:4000/api/v1/bookings/date/${date}?sitting=${sitting}`;
   const response = await axios.get<any>(url);
   const bookings = response.data.data;
-  console.log(bookings);
   return bookings;
 }
 
@@ -52,8 +49,6 @@ export async function createNewBooking({
       date: date,
     }
   );
-  console.log(response.data);
-  console.log("Booking added");
   return response.data;
 }
 
@@ -61,8 +56,6 @@ export async function deleteBookingById(id: string) {
   let response = await axios.delete<IBooking>(
     `http://localhost:4000/api/v1/bookings/${id}`
   );
-  console.log(response.data);
-  console.log("Booking deleted");
   return response.data;
 }
 
@@ -78,24 +71,45 @@ export async function updateBookingById(
     email,
     phoneNumber,
   }: IBooking
-) {
-  console.log(firstName);
+): Promise<IBooking> {
+  const updatedFields: Partial<IBooking> = {};
+
+  if (numberOfPeople !== undefined) {
+    updatedFields.numberOfPeople = numberOfPeople;
+  }
+
+  if (actualNumberOfGuests !== undefined) {
+    updatedFields.actualNumberOfGuests = actualNumberOfGuests;
+  }
+
+  if (sitting !== undefined) {
+    updatedFields.sitting = sitting;
+  }
+
+  if (date !== undefined) {
+    updatedFields.date = date;
+  }
+
+  if (firstName !== undefined) {
+    updatedFields.firstName = firstName;
+  }
+
+  if (lastName !== undefined) {
+    updatedFields.lastName = lastName;
+  }
+
+  if (email !== undefined) {
+    updatedFields.email = email;
+  }
+
+  if (phoneNumber !== undefined) {
+    updatedFields.phoneNumber = phoneNumber;
+  }
+
   let response = await axios.put<IBooking>(
     `http://localhost:4000/api/v1/bookings/${id}`,
-    {
-      table: [],
-      numberOfPeople: numberOfPeople,
-      actualNumberOfGuests: actualNumberOfGuests,
-      sitting: sitting,
-      date: date,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-    }
+    updatedFields
   );
-  console.log(response.data);
-  console.log("Booking updated");
 
   return response.data;
 }

@@ -1,5 +1,6 @@
 import { IBooking } from "../models/IBooking";
 
+
 export enum ActionType {
   FIRSTNAME,
   LASTNAME,
@@ -9,6 +10,7 @@ export enum ActionType {
   NUMBEROFPEOPLE,
   DATE,
   GOTBOOKINGID,
+  ACTUALNUMBEROFGUESTS,
 }
 
 export interface IAction {
@@ -24,6 +26,10 @@ const BookingReducer = (booking: IBooking, action: IAction): IBooking => {
 
     case ActionType.SITTING: {
       return { ...booking, sitting: action.payload };
+    }
+
+    case ActionType.ACTUALNUMBEROFGUESTS: {
+      return { ...booking, actualNumberOfGuests: action.payload };
     }
 
     case ActionType.DATE: {
