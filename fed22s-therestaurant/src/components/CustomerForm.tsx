@@ -3,6 +3,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { createNewBooking } from "../services/bookingServices";
 import { ChangeEvent, useContext, useState } from "react";
 import { Wrapper } from "./styled/Wrappers";
+import { Loader } from "./styled/Loader";
 import {
   BookingContext,
   BookingDispatchContext,
@@ -12,6 +13,7 @@ import axios from "axios";
 import { IBooking } from "../models/IBooking";
 import BookingConfirmation from "./BookingConfirmation";
 import { createEmail } from "../services/mailServices";
+import { Button } from "./styled/Buttons";
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
@@ -64,8 +66,11 @@ const CustomerForm = ({
     }
   };
 
+  const [loaderValue, setLoaderValue] = useState(false);
+
   const checkIfBookingPossible = async () => {
     const { sitting, numberOfPeople } = booking;
+    setLoaderValue(true);
 
     try {
       const bookingDate = new Date(booking.date.toString())
@@ -129,13 +134,18 @@ const CustomerForm = ({
       existingBookings.push(newBooking);
       console.log(existingBookings);
 
-      await createNewBooking(newBooking);
+      setTimeout(async () => {
+        setLoaderValue(false)
+        await createNewBooking(newBooking);
+      }, 3000);
+      
     } catch (error) {
       console.log("Error checking availability:", error);
     }
   };
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
+    
     const { firstName, lastName, email, phoneNumber } = data;
 
     dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
@@ -150,14 +160,20 @@ const CustomerForm = ({
       new Date(booking.date).toLocaleDateString(),
       booking._id
     );
-    showCustomerForm(false);
-    showConfirmation(true);
+
+    setTimeout(async () => {
+      showCustomerForm(false);
+      showConfirmation(true);
+    }, 3000);
   };
 
   return (
     <div>
       {showForm ? (
         <Wrapper>
+          {loaderValue ? (<Loader>
+            <span className="loader"></span>
+          </Loader>) : <></>}
           <div>
             <p>
               <b>Datum:</b>{" "}
@@ -305,11 +321,22 @@ const CustomerForm = ({
               }}
             />
             <br />
-            <label htmlFor="gdprCheck">
-              Jag godkänner hanteringen av mina personuppgifter.
-            </label>
-            <input type="checkbox" id="gdprCheck" />
-            <input type="submit" />
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <label htmlFor="gdprCheck">
+                Jag godkänner hanteringen av mina personuppgifter.
+              </label>
+              <input type="checkbox" id="gdprCheck" />
+            </div>
+            <Button bgcolor="green" color="white" fontSize="1rem" type="submit">
+              Boka
+            </Button>
           </form>
         </Wrapper>
       ) : null}
