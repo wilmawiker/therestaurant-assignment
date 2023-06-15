@@ -15,12 +15,12 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const geTableDataata = async () => {
+    const getBookings = async () => {
       getAllBookings().then((bookings) => {
         set(bookings);
       });
     };
-    geTableDataata();
+    getBookings();
   }, []);
 
   const todaysBookings = bookings.filter((booking) => {
@@ -29,8 +29,6 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
       new Date().toLocaleDateString()
     );
   });
-
-  console.log(todaysBookings);
 
   async function RemoveBooking(id: string) {
     console.log(id);
@@ -41,16 +39,29 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
 
   return (
     <>
-      <Button
-        bgcolor="black"
-        color="white"
-        fontSize="1rem"
-        onClick={() => {
-          set(todaysBookings);
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
       >
-        Visa dagens bokningar
-      </Button>
+        <Button
+          bgcolor="black"
+          color="white"
+          fontSize="1rem"
+          onClick={() => {
+            set(todaysBookings);
+          }}
+        >
+          Visa dagens bokningar
+        </Button>
+        <Link to={"/book"}>
+          <Button bgcolor="black" color="white" fontSize="1rem">
+            Boka bord
+          </Button>
+        </Link>
+      </div>
       <TableWrapper>
         <Table>
           <thead>
