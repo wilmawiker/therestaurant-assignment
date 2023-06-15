@@ -65,16 +65,15 @@ const CustomerForm = ({
   };
 
   const checkIfBookingPossible = async () => {
-    const { sitting, date, numberOfPeople } = booking;
+    const { sitting, numberOfPeople } = booking;
 
     try {
-      let bookingDate = new Date(date);
+      const bookingDate = new Date(booking.date.toString())
+        .toLocaleDateString()
+        .replace(/-/g, "/");
+      const formattedBookingDate = bookingDate.split("/").join("-");
 
-      bookingDate.setDate(bookingDate.getDate() + 1);
-
-      const url = `http://localhost:4000/api/v1/bookings/date/${bookingDate
-        .toISOString()
-        .slice(0, 10)}?sitting=${sitting}`;
+      const url = `http://localhost:4000/api/v1/bookings/date/${formattedBookingDate}?sitting=${sitting}`;
 
       let existingBookings: IBooking[] = [];
 
@@ -119,7 +118,7 @@ const CustomerForm = ({
         numberOfPeople: seatsNeeded,
         actualNumberOfGuests: numberOfPeople, // Use the original number of guests as the actual number
         sitting,
-        date: bookingDate,
+        date: formattedBookingDate,
         firstName: booking.firstName,
         lastName: booking.lastName,
         email: booking.email,

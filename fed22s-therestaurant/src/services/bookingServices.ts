@@ -66,11 +66,32 @@ export async function deleteBookingById(id: string) {
   return response.data;
 }
 
-export async function updateBookingById(id: string) {
+export async function updateBookingById(
+  id: string,
+  {
+    numberOfPeople,
+    actualNumberOfGuests, // Add the new field
+    sitting,
+    date,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+  }: IBooking
+) {
+  console.log(firstName);
   let response = await axios.put<IBooking>(
     `http://localhost:4000/api/v1/bookings/${id}`,
     {
-      sitting: 1,
+      table: [],
+      numberOfPeople: numberOfPeople,
+      actualNumberOfGuests: actualNumberOfGuests, // Include the new field
+      sitting: sitting,
+      date: date,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
     }
   );
   console.log(response.data);
