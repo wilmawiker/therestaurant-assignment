@@ -1,7 +1,6 @@
 import { useEffect, useState, useReducer } from "react";
 import { IBooking, defaultBooking } from "./../models/IBooking";
 import { getAllBookings } from "../services/bookingServices";
-import setBookingsLs from "../utils/setLS";
 import FilterBookings from "../components/FilterBookings";
 import { AdminTable } from "../components/AdminTable";
 import { StyledH1 } from "../components/styled/StyledH1";
@@ -11,6 +10,7 @@ import {
   BookingContext,
   BookingDispatchContext,
 } from "../contexts/BookingContext";
+import setBookingsLs from "../utils/setLS";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState<IBooking[]>([]);
