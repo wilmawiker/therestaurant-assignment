@@ -8,6 +8,7 @@ export enum ActionType {
   SITTING,
   NUMBEROFPEOPLE,
   DATE,
+  GOTBOOKINGID,
 }
 
 export interface IAction {
@@ -43,6 +44,10 @@ const BookingReducer = (booking: IBooking, action: IAction): IBooking => {
 
     case ActionType.PHONENUMBER: {
       return { ...booking, phoneNumber: action.payload };
+    }
+
+    case ActionType.GOTBOOKINGID: {
+      return { ...booking, _id: action.payload };
     }
 
     default: {
