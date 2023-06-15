@@ -65,6 +65,11 @@ const CustomerForm = ({
         break;
     }
   };
+  const [disabled, setDisabled] = useState(true);
+
+  const isDisabled = () => {
+    setDisabled(!disabled);
+  };
 
   const [loaderValue, setLoaderValue] = useState(false);
 
@@ -135,17 +140,15 @@ const CustomerForm = ({
       console.log(existingBookings);
 
       setTimeout(async () => {
-        setLoaderValue(false)
+        setLoaderValue(false);
         await createNewBooking(newBooking);
       }, 3000);
-      
     } catch (error) {
       console.log("Error checking availability:", error);
     }
   };
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
-    
     const { firstName, lastName, email, phoneNumber } = data;
 
     dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
@@ -171,9 +174,13 @@ const CustomerForm = ({
     <div>
       {showForm ? (
         <Wrapper>
-          {loaderValue ? (<Loader>
-            <span className="loader"></span>
-          </Loader>) : <></>}
+          {loaderValue ? (
+            <Loader>
+              <span className="loader"></span>
+            </Loader>
+          ) : (
+            <></>
+          )}
           <div>
             <p>
               <b>Datum:</b>{" "}
@@ -332,9 +339,15 @@ const CustomerForm = ({
               <label htmlFor="gdprCheck">
                 Jag godkänner hanteringen av mina personuppgifter.
               </label>
-              <input type="checkbox" id="gdprCheck" />
+              <input type="checkbox" onChange={isDisabled} id="gdprCheck" />
             </div>
-            <Button bgcolor="green" color="white" fontSize="1rem" type="submit">
+            <Button
+              bgcolor="green"
+              color="white"
+              fontSize="1rem"
+              type="submit"
+              disabled={disabled}
+            >
               Boka
             </Button>
           </form>
