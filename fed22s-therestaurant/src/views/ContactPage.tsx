@@ -13,7 +13,7 @@ import { Button } from "../components/styled/Buttons";
 const ContactPage = () => {
   return (
     <>
-      <GeneralWrapper>
+      <GeneralWrapper flexdirection="row">
         <Wrapper>
           <h3>Kontakta oss</h3>
           <StyledP>
@@ -22,12 +22,14 @@ const ContactPage = () => {
             bokningstjänst.
           </StyledP>
           <Link to="/book">
-            <Button>Boka Bord</Button>
+            <Button bgcolor="red" color="white" fontSize="1rem">
+              Boka Bord
+            </Button>
           </Link>
           <Hr></Hr>
           <ContactWrapper>
             <InfoWrapper>
-              <h5>AWO</h5>
+              <h5>WAIO</h5>
               <p>Vägen 12</p>
               <p>123 45 Sthlm</p>
               <p>Tel. 123-456 78 90</p>
