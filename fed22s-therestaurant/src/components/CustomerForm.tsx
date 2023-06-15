@@ -120,11 +120,19 @@ const CustomerForm = ({
       const seatsNeeded = tablesNeeded * 6;
 
       if (seatsNeeded > remainingSeats) {
-        showCannotPlaceBooking(true);
         console.log(
           `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
         );
+        setTimeout(() => {
+          showCustomerForm(false);
+          showCannotPlaceBooking(true);
+        }, 3000)
         return;
+      } else {
+        setTimeout(() => {
+          showCustomerForm(false);
+          showConfirmation(true);
+        }, 3000)
       }
 
       const newBooking: IBooking = {
@@ -159,7 +167,6 @@ const CustomerForm = ({
       console.log("Error checking availability:", error);
     }
   };
-  console.log(booking);
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
     const { firstName, lastName, email, phoneNumber } = data;
@@ -170,12 +177,6 @@ const CustomerForm = ({
     dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
 
     await checkIfBookingPossible();
-
-    setTimeout(async () => {
-      showCustomerForm(false);
-      showConfirmation(false);
-      
-    }, 3000);
   };
 
   return (
