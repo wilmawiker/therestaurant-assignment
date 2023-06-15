@@ -25,14 +25,12 @@ interface IUpdateBookingFormInput {
   lastName: string;
   numberOfPeople: number;
   sitting: number;
+  date: string;
 }
 
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
   const dispatch = useContext(BookingDispatchContext);
   const { handleSubmit, register } = useForm<IUpdateBookingFormInput>();
-  const [pickedDate, changeDate] = useState<
-    ValuePiece | [ValuePiece, ValuePiece]
-  >(booking.date);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -69,12 +67,13 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
     deleteBookingById(id);
   }
   const onSubmit: SubmitHandler<IUpdateBookingFormInput> = async (data) => {
-    const { firstName, lastName, numberOfPeople, sitting } = data;
+    const { firstName, lastName, numberOfPeople, sitting, date } = data;
 
     dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
     dispatch({ type: ActionType.LASTNAME, payload: lastName });
     dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: numberOfPeople });
     dispatch({ type: ActionType.SITTING, payload: sitting });
+    dispatch({ type: ActionType.DATE, payload: date });
 
     const updatedBooking: IBooking = {
       table: booking.table,
@@ -105,7 +104,6 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
         <Table>
           <thead>
             <TableRow>
-              <TableHeader>Datum</TableHeader>
               <TableHeader>Förnamn</TableHeader>
               <TableHeader>Efternamn</TableHeader>
               <TableHeader>Gäster</TableHeader>
@@ -115,13 +113,6 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
           <tbody>
             <TableRow>
               <TableData>
-                <DatePicker
-                onChange={changeDate}
-                value={pickedDate}
-                minDate={new Date()}
-              ></DatePicker>
-              </TableData>
-              <TableData>
                 <input
                   type="text"
                   defaultValue={booking?.firstName}
@@ -129,6 +120,7 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
                   name="firstName"
                   onChange={handleChange}
                   style={{ fontFamily: "Poppins" }}
+                  className="input__text"
                 />
               </TableData>
               <TableData>
@@ -139,6 +131,7 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
                   name="lastName"
                   onChange={handleChange}
                   style={{ fontFamily: "Poppins" }}
+                  className="input__text"
                 />
               </TableData>
               <TableData>
@@ -150,12 +143,32 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
                   onChange={handleChange}
                   style={{ fontFamily: "Poppins" }}
                   min={1}
-                  max={6}
+                  max={12}
+                  className="input__number"
                 />
               </TableData>
-              <TableData>{booking?.sitting.toString()}</TableData>
               <TableData>
-                <input type="submit" />
+                <input
+                  type="number"
+                  defaultValue={booking?.sitting.toString()}
+                  {...register("sitting")}
+                  name="sitting"
+                  onChange={handleChange}
+                  style={{ fontFamily: "Poppins" }}
+                  min={1}
+                  max={2}
+                  className="input__number"
+                />
+              </TableData>
+              <TableData>
+                <Button
+                  bgcolor="black"
+                  color="white"
+                  fontSize="0.7rem"
+                  type="submit"
+                >
+                  Spara
+                </Button>
               </TableData>
               <TableData>
                 <Button
