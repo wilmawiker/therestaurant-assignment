@@ -78,7 +78,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
           </thead>
           <tbody>
             {bookings.map((booking) => (
-              <TableRow>
+              <TableRow key={booking._id}>
                 <TableData>
                   {new Date(booking.date).toLocaleDateString()}
                 </TableData>
