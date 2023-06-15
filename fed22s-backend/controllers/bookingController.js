@@ -157,7 +157,8 @@ exports.updateBookingById = async (req, res) => {
     booking.email = email || booking.email;
     booking.phoneNumber = phoneNumber || booking.phoneNumber;
     booking.date = date || booking.date;
-    booking.firstName = firstName || booking.lastName;
+    booking.firstName = firstName || booking.firstName;
+    booking.lastName = lastName || booking.lastName;
 
     // Update the booking
     await booking.save();
