@@ -3,7 +3,7 @@ export interface IBooking {
   numberOfPeople: number;
   actualNumberOfGuests: number; // Add a new property to store the actual number of guests
   sitting: number;
-  date: Date;
+  date: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,7 +17,7 @@ export const defaultBooking: IBooking = {
   numberOfPeople: 1,
   actualNumberOfGuests: 1, // Set the initial value to 1
   sitting: 1,
-  date: new Date(),
+  date: "",
   firstName: "",
   lastName: "",
   email: "",
