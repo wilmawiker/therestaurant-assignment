@@ -34,12 +34,9 @@ exports.getAllBookings = async (req, res) => {
 exports.getAllBookingsByDate = async (req, res) => {
   try {
     const { date } = req.params;
-    const startDate = new Date(date);
-    const endDate = new Date(date);
-    endDate.setDate(endDate.getDate() + 1);
 
     let query = {
-      date: { $gte: startDate, $lt: endDate },
+      date: date,
     };
 
     if (req.query.sitting) {
@@ -64,8 +61,6 @@ exports.getAllBookingsByDate = async (req, res) => {
     });
   }
 };
-
-
 
 exports.createNewBooking = async (req, res) => {
   try {
