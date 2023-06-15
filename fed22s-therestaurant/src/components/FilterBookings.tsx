@@ -9,7 +9,6 @@ interface FilterBookingsProps {
 
 const FilterBookings = ({ bookings, set }: FilterBookingsProps) => {
   const [searchWord, setSearchWord] = useState("");
-  const [filteredList, setFilteredList] = useState<IBooking[]>(bookings);
 
   useEffect(() => {
     set(bookingFromLS);

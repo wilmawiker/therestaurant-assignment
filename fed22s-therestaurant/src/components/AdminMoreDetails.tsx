@@ -1,8 +1,9 @@
-import { TableWrapper, Wrapper } from "../components/styled/Wrappers";
+import { Wrapper } from "../components/styled/Wrappers";
 import {
   deleteBookingById,
   updateBookingById,
 } from "../services/bookingServices";
+import { useState } from "react";
 import { Button } from "../components/styled/Buttons";
 import { IBooking } from "../models/IBooking";
 import { Link } from "react-router-dom";
@@ -11,6 +12,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ChangeEvent, useContext } from "react";
 import { BookingDispatchContext } from "../contexts/BookingContext";
 import { ActionType } from "../reducers/BookingReducer";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import { ValuePiece } from "../utils/valuePiece";
 
 interface FilterBookingsProps {
   booking: IBooking;
@@ -26,6 +30,9 @@ interface IUpdateBookingFormInput {
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
   const dispatch = useContext(BookingDispatchContext);
   const { handleSubmit, register } = useForm<IUpdateBookingFormInput>();
+  const [pickedDate, changeDate] = useState<
+    ValuePiece | [ValuePiece, ValuePiece]
+  >(booking.date);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -108,7 +115,11 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
           <tbody>
             <TableRow>
               <TableData>
-                {new Date(booking?.date).toLocaleDateString()}
+                <DatePicker
+                onChange={changeDate}
+                value={pickedDate}
+                minDate={new Date()}
+              ></DatePicker>
               </TableData>
               <TableData>
                 <input

@@ -11,11 +11,21 @@ export const TableRow = styled.tr`
 
 export const TableHeader = styled.th`
   width: 100px;
-  font-size: 1.2rem;
+  font-size: 1.2;
 `;
 
 export const TableData = styled.td`
   font-size: 0.8rem;
   text-align: center;
   width: 100px;
+
+  .input__text {
+    height: 30px;
+    width: 120px;
+  }
+
+  .input__number {
+    height: 30px;
+    width: 50px;
+  }
 `;
