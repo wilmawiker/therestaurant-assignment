@@ -99,7 +99,7 @@ exports.createNewBooking = async (req, res) => {
       email,
       phoneNumber,
       date: date,
-    });    
+    });
 
     return res.status(201).json(newBooking);
   } catch (error) {
@@ -108,7 +108,6 @@ exports.createNewBooking = async (req, res) => {
     });
   }
 };
-
 
 exports.deleteBookingById = async (req, res) => {
   try {
@@ -135,8 +134,15 @@ exports.deleteBookingById = async (req, res) => {
 exports.updateBookingById = async (req, res) => {
   try {
     const bookingId = req.params.bookingId;
-    const { numberOfPeople, sitting, email, phoneNumber, date } =
-      req.body;
+    const {
+      numberOfPeople,
+      sitting,
+      email,
+      phoneNumber,
+      date,
+      firstName,
+      lastName,
+    } = req.body;
 
     const booking = await Booking.findById(bookingId);
 
@@ -151,6 +157,7 @@ exports.updateBookingById = async (req, res) => {
     booking.email = email || booking.email;
     booking.phoneNumber = phoneNumber || booking.phoneNumber;
     booking.date = date || booking.date;
+    booking.firstName = firstName || booking.lastName;
 
     // Update the booking
     await booking.save();

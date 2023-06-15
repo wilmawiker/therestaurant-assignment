@@ -8,6 +8,10 @@ import { Button } from "../components/styled/Buttons";
 import { IBooking } from "../models/IBooking";
 import { Link } from "react-router-dom";
 import { Table, TableData, TableHeader, TableRow } from "./styled/Table";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ChangeEvent, useContext } from "react";
+import { BookingDispatchContext } from "../contexts/BookingContext";
+import { ActionType } from "../reducers/BookingReducer";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import { ValuePiece } from "../utils/valuePiece";
@@ -16,17 +20,79 @@ interface FilterBookingsProps {
   booking: IBooking;
 }
 
+interface IUpdateBookingFormInput {
+  firstName: string;
+  lastName: string;
+  numberOfPeople: number;
+  sitting: number;
+}
+
 export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
+  const dispatch = useContext(BookingDispatchContext);
+  const { handleSubmit, register } = useForm<IUpdateBookingFormInput>();
   const [pickedDate, changeDate] = useState<
     ValuePiece | [ValuePiece, ValuePiece]
   >(booking.date);
-  function SaveBooking(id: string) {
-    updateBookingById(id);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    console.log(name);
+    switch (name) {
+      case "firstName":
+        dispatch({ type: ActionType.FIRSTNAME, payload: e.target.value });
+        break;
+
+      case "lastName":
+        dispatch({ type: ActionType.LASTNAME, payload: e.target.value });
+        break;
+
+      case "numberOfPeople":
+        dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: e.target.value });
+        break;
+
+      case "sitting":
+        dispatch({ type: ActionType.SITTING, payload: e.target.value });
+        break;
+
+      default:
+        break;
+    }
+    console.log(ActionType.FIRSTNAME);
+  };
+
+  async function saveBooking(id: string, updatedBooking: IBooking) {
+    await updateBookingById(id, updatedBooking);
+    console.log("Booking updated");
   }
 
-  function RemoveBooking(id: string) {
+  function removeBooking(id: string) {
     deleteBookingById(id);
   }
+  const onSubmit: SubmitHandler<IUpdateBookingFormInput> = async (data) => {
+    const { firstName, lastName, numberOfPeople, sitting } = data;
+
+    dispatch({ type: ActionType.FIRSTNAME, payload: firstName });
+    dispatch({ type: ActionType.LASTNAME, payload: lastName });
+    dispatch({ type: ActionType.NUMBEROFPEOPLE, payload: numberOfPeople });
+    dispatch({ type: ActionType.SITTING, payload: sitting });
+
+    const updatedBooking: IBooking = {
+      table: booking.table,
+      numberOfPeople: numberOfPeople || booking.numberOfPeople,
+      actualNumberOfGuests: numberOfPeople || booking.numberOfPeople, // Use the original number of guests as the actual number
+      sitting: sitting || booking.sitting,
+      date: booking.date,
+      firstName: firstName || booking.firstName,
+      lastName: lastName || booking.lastName,
+      email: booking.email,
+      phoneNumber: booking.phoneNumber,
+      _id: "",
+    };
+
+    console.log(updatedBooking);
+    console.log(booking._id);
+    saveBooking(booking._id, updatedBooking);
+  };
 
   return (
     <Wrapper>
@@ -35,79 +101,77 @@ export const AdminMoreDetails = ({ booking }: FilterBookingsProps) => {
           Tillbaka
         </Button>
       </Link>
-      <Table>
-        <thead>
-          <TableRow>
-            <TableHeader>Datum</TableHeader>
-            <TableHeader>Förnamn</TableHeader>
-            <TableHeader>Efternamn</TableHeader>
-            <TableHeader>Gäster</TableHeader>
-            <TableHeader>Sittning</TableHeader>
-          </TableRow>
-        </thead>
-        <tbody>
-          <TableRow>
-            <TableData>
-              <DatePicker
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Table>
+          <thead>
+            <TableRow>
+              <TableHeader>Datum</TableHeader>
+              <TableHeader>Förnamn</TableHeader>
+              <TableHeader>Efternamn</TableHeader>
+              <TableHeader>Gäster</TableHeader>
+              <TableHeader>Sittning</TableHeader>
+            </TableRow>
+          </thead>
+          <tbody>
+            <TableRow>
+              <TableData>
+                <DatePicker
                 onChange={changeDate}
                 value={pickedDate}
                 minDate={new Date()}
               ></DatePicker>
-            </TableData>
-            <TableData>
-              <input
-                type="text"
-                placeholder={booking?.firstName}
-                className="input__text"
-              />
-            </TableData>
-            <TableData>
-              <input
-                type="text"
-                placeholder={booking?.lastName}
-                className="input__text"
-              />
-            </TableData>
-            <TableData>
-              <input
-                type="number"
-                placeholder={booking?.numberOfPeople.toString()}
-                className="input__number"
-              />
-            </TableData>
-            <TableData>
-              <input
-                type="number"
-                min={1}
-                max={2}
-                placeholder={booking?.sitting.toString()}
-                className="input__number"
-              />
-            </TableData>
-            <TableData>
-              <Button
-                bgcolor="black"
-                color="white"
-                fontSize="0.7rem"
-                onClick={() => SaveBooking(booking._id)}
-              >
-                Spara
-              </Button>
-            </TableData>
-            <TableData>
-              <Button
-                bgcolor="red"
-                color="white"
-                fontSize="0.7rem"
-                type="button"
-                onClick={() => RemoveBooking(booking._id)}
-              >
-                Ta Bort
-              </Button>
-            </TableData>
-          </TableRow>
-        </tbody>
-      </Table>
+              </TableData>
+              <TableData>
+                <input
+                  type="text"
+                  defaultValue={booking?.firstName}
+                  {...register("firstName")}
+                  name="firstName"
+                  onChange={handleChange}
+                  style={{ fontFamily: "Poppins" }}
+                />
+              </TableData>
+              <TableData>
+                <input
+                  type="text"
+                  defaultValue={booking?.lastName}
+                  {...register("lastName")}
+                  name="lastName"
+                  onChange={handleChange}
+                  style={{ fontFamily: "Poppins" }}
+                />
+              </TableData>
+              <TableData>
+                <input
+                  type="number"
+                  defaultValue={booking?.numberOfPeople}
+                  {...register("numberOfPeople")}
+                  name="numberOfPeople"
+                  onChange={handleChange}
+                  style={{ fontFamily: "Poppins" }}
+                  min={1}
+                  max={6}
+                />
+              </TableData>
+              <TableData>{booking?.sitting.toString()}</TableData>
+              <TableData>
+                <input type="submit" />
+              </TableData>
+              <TableData>
+                <Button
+                  bgcolor="red"
+                  color="white"
+                  fontSize="0.7rem"
+                  type="button"
+                  onClick={() => removeBooking(booking._id)}
+                >
+                  Ta Bort
+                </Button>
+              </TableData>
+            </TableRow>
+          </tbody>
+        </Table>
+      </form>
     </Wrapper>
   );
 };
