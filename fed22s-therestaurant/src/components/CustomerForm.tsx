@@ -12,6 +12,7 @@ import axios from "axios";
 import { IBooking } from "../models/IBooking";
 import BookingConfirmation from "./BookingConfirmation";
 import { createEmail } from "../services/mailServices";
+import { Button } from "./styled/Buttons";
 interface ICustomerFormInput {
   firstName: string;
   lastName: string;
@@ -305,11 +306,22 @@ const CustomerForm = ({
               }}
             />
             <br />
-            <label htmlFor="gdprCheck">
-              Jag godkänner hanteringen av mina personuppgifter.
-            </label>
-            <input type="checkbox" id="gdprCheck" />
-            <input type="submit" />
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <label htmlFor="gdprCheck">
+                Jag godkänner hanteringen av mina personuppgifter.
+              </label>
+              <input type="checkbox" id="gdprCheck" />
+            </div>
+            <Button bgcolor="green" color="white" fontSize="1rem" type="submit">
+              Boka
+            </Button>
           </form>
         </Wrapper>
       ) : null}
