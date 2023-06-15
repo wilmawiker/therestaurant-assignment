@@ -48,20 +48,28 @@ const DateForm = ({
         {dateForm ? (
           <Wrapper>
             <form onSubmit={handleSubmit}>
-              <label htmlFor="guests">
-                <StyledP>Antal gäster:</StyledP>
-              </label>
-
-              <input 
-                type="number"
-                name="numberOfPeople"
-                id="guests"
-                onChange={handlePeopleChange}
-                style={{ fontFamily: "Poppins" }}
-                min="1"
-                max="90"
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
               >
-              </input>
+                <label htmlFor="guests">
+                  <StyledP>Antal gäster:</StyledP>
+                </label>
+
+                <input
+                  type="number"
+                  name="numberOfPeople"
+                  id="guests"
+                  onChange={handlePeopleChange}
+                  style={{ fontFamily: "Poppins" }}
+                  min="1"
+                  max="90"
+                  placeholder="1"
+                ></input>
+              </div>
               <Calendar
                 onChange={handleDateChange}
                 value={date}
