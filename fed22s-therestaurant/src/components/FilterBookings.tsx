@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import bookingFromLS from "../utils/getLS";
 import { IBooking } from "../models/IBooking";
+import { Button } from "./styled/Buttons";
+import bookingFromLS from "../utils/getLS";
 
 interface FilterBookingsProps {
   bookings: IBooking[];
@@ -11,15 +12,11 @@ const FilterBookings = ({ bookings, set }: FilterBookingsProps) => {
   const [searchWord, setSearchWord] = useState("");
 
   useEffect(() => {
-    set(bookingFromLS);
+    set(bookings);
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value.toLowerCase());
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
     const filteredList = bookings.filter((booking) => {
       return (
         new Date(booking.date).toLocaleDateString().includes(searchWord) ||
@@ -29,13 +26,27 @@ const FilterBookings = ({ bookings, set }: FilterBookingsProps) => {
         booking.phoneNumber.includes(searchWord)
       );
     });
-    set(filteredList);
+    if (searchWord.length <= 1) {
+      set(bookingFromLS);
+    } else {
+      set(filteredList);
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="search" value={searchWord} onChange={handleChange} />
+        <input
+          type="search"
+          value={searchWord}
+          onChange={handleChange}
+          placeholder="Sök bokning"
+          style={{ padding: "0.5rem" }}
+        />
       </form>
     </div>
   );
