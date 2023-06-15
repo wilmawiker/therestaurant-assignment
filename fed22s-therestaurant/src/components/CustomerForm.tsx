@@ -12,6 +12,7 @@ import { ActionType } from "../reducers/BookingReducer";
 import axios from "axios";
 import { IBooking } from "../models/IBooking";
 import BookingConfirmation from "./BookingConfirmation";
+import CannotBook from "./CannotBook";
 import { createEmail } from "../services/mailServices";
 import { Button } from "./styled/Buttons";
 interface ICustomerFormInput {
@@ -25,12 +26,14 @@ interface ICustormerFormProps {
   showForm: boolean;
   showCustomerForm: (showCustomer: boolean) => void;
   showConfirmation: (show: boolean) => void;
+  showCannotPlaceBooking: (show: boolean) => void;
 }
 
 const CustomerForm = ({
   showForm,
   showCustomerForm,
   showConfirmation,
+  showCannotPlaceBooking,
 }: ICustormerFormProps) => {
   const dispatch = useContext(BookingDispatchContext);
   const booking = useContext(BookingContext);
@@ -117,6 +120,7 @@ const CustomerForm = ({
       const seatsNeeded = tablesNeeded * 6;
 
       if (seatsNeeded > remainingSeats) {
+        showCannotPlaceBooking(true);
         console.log(
           `The booking exceeds the available seats. Maximum capacity for the sitting is ${remainingSeats}.`
         );
@@ -166,7 +170,8 @@ const CustomerForm = ({
 
     setTimeout(async () => {
       showCustomerForm(false);
-      showConfirmation(true);
+      showConfirmation(false);
+      
     }, 3000);
   };
 

@@ -70,7 +70,7 @@ export async function updateBookingById(
   id: string,
   {
     numberOfPeople,
-    actualNumberOfGuests, // Add the new field
+    actualNumberOfGuests,
     sitting,
     date,
     firstName,
@@ -85,7 +85,7 @@ export async function updateBookingById(
     {
       table: [],
       numberOfPeople: numberOfPeople,
-      actualNumberOfGuests: actualNumberOfGuests, // Include the new field
+      actualNumberOfGuests: actualNumberOfGuests,
       sitting: sitting,
       date: date,
       firstName: firstName,

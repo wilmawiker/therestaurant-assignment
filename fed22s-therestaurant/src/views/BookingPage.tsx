@@ -11,12 +11,14 @@ import {
 } from "../contexts/BookingContext";
 import BookingReducer from "../reducers/BookingReducer";
 import BookingConfirmation from "../components/BookingConfirmation";
+import CannotBook from "../components/CannotBook";
 
 const BookingPage = () => {
   const [booking, dispatch] = useReducer(BookingReducer, defaultBooking);
   const [showDateForm, setDateForm] = useState(true);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [showBookingConfirmation, setShowBookingConfirmation] = useState(false);
+  const [showCannotBook, setShowCannotBook] = useState(false);
 
   return (
     <BookingContext.Provider value={booking}>
@@ -31,10 +33,14 @@ const BookingPage = () => {
             showForm={showCustomerForm}
             showCustomerForm={setShowCustomerForm}
             showConfirmation={setShowBookingConfirmation}
+            showCannotPlaceBooking={setShowCannotBook}
           ></CustomerForm>
           <BookingConfirmation
             show={showBookingConfirmation}
           ></BookingConfirmation>
+          <CannotBook
+            show={showCannotBook}
+          ></CannotBook>
           <Link to="/gdpr">
             <GDPRButton bgcolor="gray" color="white" fontSize="0.8rem">
               Personuppgiftspolicy
