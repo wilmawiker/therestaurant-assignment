@@ -136,6 +136,7 @@ exports.updateBookingById = async (req, res) => {
     const bookingId = req.params.bookingId;
     const {
       numberOfPeople,
+      actualNumberOfGuests,
       sitting,
       email,
       phoneNumber,
@@ -153,6 +154,7 @@ exports.updateBookingById = async (req, res) => {
     }
 
     booking.numberOfPeople = numberOfPeople || booking.numberOfPeople;
+    booking.actualNumberOfGuests = actualNumberOfGuests || booking.actualNumberOfGuests;
     booking.sitting = sitting || booking.sitting;
     booking.email = email || booking.email;
     booking.phoneNumber = phoneNumber || booking.phoneNumber;
