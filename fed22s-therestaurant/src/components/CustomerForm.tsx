@@ -11,7 +11,6 @@ import {
 import { ActionType } from "../reducers/BookingReducer";
 import axios from "axios";
 import { IBooking } from "../models/IBooking";
-import BookingConfirmation from "./BookingConfirmation";
 import { createEmail } from "../services/mailServices";
 import { Button } from "./styled/Buttons";
 interface ICustomerFormInput {

@@ -1,9 +1,9 @@
 import { useReducer, useState } from "react";
 import CustomerForm from "../components/CustomerForm";
 import DateForm from "../components/DateForm";
-import { IBooking, defaultBooking } from "../models/IBooking";
-import { Link } from "react-router-dom";
-import { GDPRButton, LandingPageButton } from "../components/styled/Buttons";
+import { defaultBooking } from "../models/IBooking";
+import { useNavigate } from "react-router-dom";
+import { GDPRButton } from "../components/styled/Buttons";
 import { GeneralWrapper } from "../components/styled/Wrappers";
 import {
   BookingContext,
@@ -13,6 +13,8 @@ import BookingReducer from "../reducers/BookingReducer";
 import BookingConfirmation from "../components/BookingConfirmation";
 
 const BookingPage = () => {
+  const navigate = useNavigate();
+
   const [booking, dispatch] = useReducer(BookingReducer, defaultBooking);
   const [showDateForm, setDateForm] = useState(true);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
@@ -35,11 +37,14 @@ const BookingPage = () => {
           <BookingConfirmation
             show={showBookingConfirmation}
           ></BookingConfirmation>
-          <Link to="/gdpr">
-            <GDPRButton bgcolor="gray" color="white" fontSize="0.8rem">
-              Personuppgiftspolicy
-            </GDPRButton>
-          </Link>
+          <GDPRButton
+            bgcolor="gray"
+            color="white"
+            fontSize="0.8rem"
+            onClick={() => navigate("/gdpr")}
+          >
+            Personuppgiftspolicy
+          </GDPRButton>
         </GeneralWrapper>
       </BookingDispatchContext.Provider>
     </BookingContext.Provider>
