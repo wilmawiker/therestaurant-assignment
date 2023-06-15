@@ -16,13 +16,11 @@ export const Button = styled.button<IButtonProps>`
   transition: 300ms;
   transform: scale(0.9);
   font-size: ${(props: IButtonProps) => props.fontSize || "1rem"};
-  &:hover{
+  &:hover {
     cursor: pointer;
     transform: scale(1);
   }
 `;
-
-export const LandingPageButton = styled(Button)``;
 
 export const GDPRButton = styled(Button)`
   padding: 0.5rem;
