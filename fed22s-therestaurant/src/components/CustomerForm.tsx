@@ -137,7 +137,7 @@ const CustomerForm = ({
         lastName: booking.lastName,
         email: booking.email,
         phoneNumber: booking.phoneNumber,
-        _id: "",
+        _id: booking._id,
       };
 
       existingBookings.push(newBooking);
@@ -145,12 +145,21 @@ const CustomerForm = ({
 
       setTimeout(async () => {
         setLoaderValue(false);
-        await createNewBooking(newBooking);
+        const response = await createNewBooking(newBooking);
+        dispatch({ type: ActionType.GOTBOOKINGID, payload: response._id });
+
+        await createEmail(
+          booking.email,
+          booking.firstName,
+          new Date(booking.date).toLocaleDateString(),
+          response._id
+        );
       }, 3000);
     } catch (error) {
       console.log("Error checking availability:", error);
     }
   };
+  console.log(booking);
 
   const onSubmit: SubmitHandler<ICustomerFormInput> = async (data) => {
     const { firstName, lastName, email, phoneNumber } = data;
@@ -161,12 +170,6 @@ const CustomerForm = ({
     dispatch({ type: ActionType.PHONENUMBER, payload: phoneNumber });
 
     await checkIfBookingPossible();
-    await createEmail(
-      email,
-      firstName,
-      new Date(booking.date).toLocaleDateString(),
-      booking._id
-    );
 
     setTimeout(async () => {
       showCustomerForm(false);
