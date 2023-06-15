@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAllBookings } from "../services/bookingServices";
+import { getAllBookings, deleteBookingById } from "../services/bookingServices";
 import { IBooking } from "../models/IBooking";
 import { TableWrapper } from "./styled/Wrappers";
 import { Button } from "./styled/Buttons";
@@ -32,7 +32,7 @@ export const AdminTable = ({ bookings, set }: FilterBookingsProps) => {
 
   async function RemoveBooking(id: string) {
     console.log(id);
-
+    const response = await deleteBookingById(id);
     set(bookings.filter((booking) => booking._id !== id));
   }
 
