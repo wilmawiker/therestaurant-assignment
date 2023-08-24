@@ -3,6 +3,8 @@
 
 # Bokningssystem
 
+Grupparbete gjort tillsammans med Adam Danielsson, Oskar Sterner och Ida Lindgren.
+
 ## Sidor
 
 Startsidan, bokningssida och en kontaktsida
